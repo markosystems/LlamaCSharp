@@ -8,7 +8,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-   
+    <None Remove="lib\ggml-base.dll" />
+    <None Remove="lib\ggml-cpu.dll" />
+    <None Remove="lib\ggml.dll" />
+    <None Remove="lib\llama.dll" />
+    <None Remove="lib\mtmd.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="lib\ggml-base.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\ggml-cpu.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\ggml.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\llama.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\mtmd.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
