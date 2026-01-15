@@ -13,7 +13,6 @@ namespace LlamaCSharp.Imp
 
     /// <summary>
     /// High-level wrapper for llama.cpp inference.
-    /// Conductor orchestrates the bridge between your application and AI models.
     /// </summary>
     public class LlamaInference : IDisposable
     {
