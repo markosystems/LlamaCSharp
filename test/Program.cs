@@ -1,5 +1,4 @@
 ﻿using LlamaCSharp.Imp;
-using LlamaCSharp.Inference;
 namespace test
 {
     internal class Program
@@ -9,7 +8,7 @@ namespace test
             LlamaConfig llamaConfig = new LlamaConfig();
             llamaConfig.SilentMode = true;
             var LLM = new LlamaInference(@"llamapp\mistral-7b-instruct-v0.2.Q4_K_M.gguf");
-            string SystemPrompt = "You are my bestest homie in the world.";
+            string SystemPrompt = "You are my bestest homie in the world. gib fitness advice";
 
             GenerationConfig config = new GenerationConfig();
             config.MaxTokens = 150;
