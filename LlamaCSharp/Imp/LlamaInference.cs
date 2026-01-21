@@ -207,18 +207,39 @@ namespace LlamaCSharp.Imp
                 if (!EvaluateBatch(tokens))
                     throw new Exception("Failed to evaluate prompt");
 
-                // Generate tokens
+                // Get EOS token
                 int eosToken = Llama.llama_vocab_eos(_vocab);
 
+                // NEW: Tokenize stop strings if provided
+                List<int[]> stopTokens = new List<int[]>();
+                if (config.StopStrings != null)
+                {
+                    foreach (var stopStr in config.StopStrings)
+                    {
+                        var stopToks = Tokenize(stopStr, addBos: false);
+                        stopTokens.Add(stopToks);
+                    }
+                }
+
+                // Generate tokens
                 for (int i = 0; i < config.MaxTokens; i++)
                 {
                     // Sample next token
                     int nextToken = Llama.llama_sampler_sample(sampler, _context, -1);
 
+                    // Check for EOS
                     if (nextToken == eosToken)
                         break;
 
                     generatedTokens.Add(nextToken);
+
+                    
+                    if (stopTokens.Count > 0 && ContainsStopSequence(generatedTokens, stopTokens))
+                    {
+                        // Remove the stop sequence from output
+                        RemoveStopSequence(generatedTokens, stopTokens);
+                        break;
+                    }
 
                     // Evaluate the new token
                     if (!EvaluateBatch(new[] { nextToken }))
@@ -278,6 +299,59 @@ namespace LlamaCSharp.Imp
             finally
             {
                 Marshal.FreeHGlobal(buffer);
+            }
+        }
+
+        // NEW: Helper methods for stop string detection
+        private bool ContainsStopSequence(List<int> tokens, List<int[]> stopSequences)
+        {
+            foreach (var stopSeq in stopSequences)
+            {
+                if (tokens.Count < stopSeq.Length)
+                    continue;
+
+                // Check if the last N tokens match the stop sequence
+                bool matches = true;
+                for (int i = 0; i < stopSeq.Length; i++)
+                {
+                    if (tokens[tokens.Count - stopSeq.Length + i] != stopSeq[i])
+                    {
+                        matches = false;
+                        break;
+                    }
+                }
+
+                if (matches)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private void RemoveStopSequence(List<int> tokens, List<int[]> stopSequences)
+        {
+            foreach (var stopSeq in stopSequences)
+            {
+                if (tokens.Count < stopSeq.Length)
+                    continue;
+
+                // Check if tokens end with this stop sequence
+                bool matches = true;
+                for (int i = 0; i < stopSeq.Length; i++)
+                {
+                    if (tokens[tokens.Count - stopSeq.Length + i] != stopSeq[i])
+                    {
+                        matches = false;
+                        break;
+                    }
+                }
+
+                if (matches)
+                {
+                    // Remove the stop sequence
+                    tokens.RemoveRange(tokens.Count - stopSeq.Length, stopSeq.Length);
+                    return;
+                }
             }
         }
 

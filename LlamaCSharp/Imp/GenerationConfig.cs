@@ -11,6 +11,7 @@ namespace LlamaCSharp.Imp
         public float MinP { get; set; } = 0.05f;
         public uint Seed { get; set; } = 0xFFFFFFFF; // Random seed
         public Action<int> OnTokenGenerated { get; set; }
+        public string[] StopStrings { get; set; } = null;
     }
     
 }
