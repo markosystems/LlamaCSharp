@@ -14,9 +14,9 @@
         public override string ToString()
         {
             return $"{Description}\n" +
-                   $"Context: {ContextLength}, " +
-                   $"Layers: {LayerCount}, " +
-                   $"Params: {ParameterCount:N0}, " +
+                   $"Context: {ContextLength:N0}, \n" +
+                   $"Layers: {LayerCount}, \n" +
+                   $"Params: {ParameterCount:N0}, \n" +
                    $"Size: {ModelSize / (1024 * 1024):N0} MB";
         }
     }

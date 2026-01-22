@@ -19,7 +19,8 @@ namespace test
             LlamaConfig llamaConfig = new LlamaConfig();
             llamaConfig.SilentMode = true;
             var LLM = new LlamaInference(@"llamapp\mistral-7b-instruct-v0.2.Q4_K_M.gguf", llamaConfig, 0);
-            string SystemPrompt = "You are a gym bro who only gives bad fitness advice";
+            Console.WriteLine(LLM.GetModelInfo().ToString());
+            string SystemPrompt = "You are a gym bro who only gives bad fitness advice.";
 
             var history = new List<ChatMessage>();
             GenerationConfig config = new GenerationConfig
@@ -29,6 +30,7 @@ namespace test
         "</s>",          // Mistral's EOS token
         "[INST]",        // Stop if it tries to continue as user
         "\n\nUser:",     // Backup if format detection fails
+        "\n"
     },
                 MaxTokens = 300,     // Increased for full responses
                 Temperature = 0.8f

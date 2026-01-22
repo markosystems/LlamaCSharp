@@ -209,29 +209,38 @@ namespace LlamaCSharp.Imp
                 // Get special tokens
                 int eosToken = Llama.llama_vocab_eos(_vocab);
 
-                // NEW: Tokenize stop strings if provided
-                List<int[]> stopTokens = new List<int[]>();
-                if (config.StopStrings != null)
-                {
-                    foreach (var stopStr in config.StopStrings)
-                    {
-                        var stopToks = Tokenize(stopStr, addBos: false);
-                        stopTokens.Add(stopToks);
-                    }
-                }
+                List<int> generatedTokens = new List<int>();
 
                 // **FIX: Generate NEW tokens (not re-evaluating prompt)**
                 for (int i = 0; i < config.MaxTokens; i++)
                 {
-                    // Sample next token from the LAST position
                     int nextToken = Llama.llama_sampler_sample(sampler, _context, -1);
 
                     if (nextToken == eosToken)
                         break;
 
-                    allTokens.Add(nextToken);
+                    generatedTokens.Add(nextToken);
 
-                    // **FIX: Evaluate ONLY the new token**
+                    // **TEXT-BASED STOP CHECK (easier):**
+                    if (config.StopStrings != null && config.StopStrings.Length > 0)
+                    {
+                        var currentText = Detokenize(generatedTokens.ToArray());
+
+                        foreach (var stopStr in config.StopStrings)
+                        {
+                            if (currentText.EndsWith(stopStr))
+                            {
+                                // Truncate and exit
+                                int stopIndex = currentText.LastIndexOf(stopStr);
+                                var finalText = currentText.Substring(0, stopIndex);
+
+                                // Early return with clean text
+                                var cleanTokens = Tokenize(finalText, addBos: false);
+                                return Detokenize(cleanTokens, removeSpecial: true);
+                            }
+                        }
+                    }
+
                     if (!EvaluateBatch(new[] { nextToken }))
                         break;
 
@@ -239,8 +248,8 @@ namespace LlamaCSharp.Imp
                 }
 
                 // **FIX: Only return the GENERATED tokens, not the prompt**
-                var generatedTokens = allTokens.Skip(promptTokens.Length).ToArray();
-                return Detokenize(generatedTokens, removeSpecial: true);
+                generatedTokens = allTokens.Skip(promptTokens.Length).ToList();
+                return Detokenize(generatedTokens.ToArray(), removeSpecial: true);
             }
             finally
             {
