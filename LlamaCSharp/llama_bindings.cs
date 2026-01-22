@@ -358,6 +358,15 @@ namespace LlamaCSharp
         [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
         public static extern unsafe float* llama_get_embeddings_seq(llama_context ctx, llama_seq_id seq_id);
 
+        [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern unsafe int llama_chat_apply_template(
+    IntPtr tmpl,  // template string (or null to use model's default)
+    llama_chat_message* chat,
+    UIntPtr n_msg,
+    [MarshalAs(UnmanagedType.I1)] bool add_ass,
+    IntPtr buf,
+    int length);
+
         #endregion
 
         #region Memory Management
