@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 
@@ -64,6 +66,29 @@ namespace LlamaCSharp.Imp
             var ctxParams = Llama.llama_context_default_params();
             ctxParams.n_ctx = (uint)config.ContextSize;
             ctxParams.n_batch = (uint)config.BatchSize;
+            ctxParams.n_threads = config.Threads;
+            ctxParams.n_threads_batch = config.ThreadsBatch;
+
+            _context = Llama.llama_init_from_model(_model, ctxParams);
+            if (_context == IntPtr.Zero)
+                throw new Exception("Failed to create context");
+
+            _vocab = Llama.llama_model_get_vocab(_model);
+            ContextSize = (int)Llama.llama_n_ctx(_context);
+            VocabSize = Llama.llama_vocab_n_tokens(_vocab);
+        }
+
+        public LlamaInference(IntPtr _m, LlamaConfig config)
+        {
+            _model = _m;
+            if (_model == IntPtr.Zero)
+                throw new Exception($"Failed to load model from");
+
+            // Create context
+            var ctxParams = Llama.llama_context_default_params();
+            ctxParams.n_ctx = (uint)config.ContextSize;
+            ctxParams.n_batch = (uint)config.BatchSize;
+            ctxParams.n_ubatch = (uint)config.UBatchSize;
             ctxParams.n_threads = config.Threads;
             ctxParams.n_threads_batch = config.ThreadsBatch;
 
@@ -177,41 +202,57 @@ namespace LlamaCSharp.Imp
         {
             config ??= new GenerationConfig();
 
-            // Tokenize prompt
             var promptTokens = Tokenize(prompt, addBos: true);
-            var allTokens = new List<int>(promptTokens);
+            var generatedTokens = new List<int>();
 
-            // Clear memory
             var memory = Llama.llama_get_memory(_context);
             Llama.llama_memory_clear(memory, data: false);
 
-            // Create sampler chain
             var samplerParams = Llama.llama_sampler_chain_default_params();
             var sampler = Llama.llama_sampler_chain_init(samplerParams);
 
             try
             {
-                // Add samplers
+                // Add samplers in order
+
+                if (config.RepeatPenaltyTokens > 0 && config.RepeatPenalty != 1.0f)
+                {
+                    Llama.llama_sampler_chain_add(
+                        sampler,
+                        Llama.llama_sampler_init_penalties(
+                            penalty_last_n: config.RepeatPenaltyTokens,
+                            penalty_repeat: config.RepeatPenalty,
+                            penalty_freq: config.FrequencyPenalty,
+                            penalty_present: config.PresencePenalty
+                        )
+                    );
+                }
+
+                
                 if (config.TopK > 0)
                     Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_top_k(config.TopK));
+
+              
                 if (config.TopP < 1.0f)
                     Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_top_p(config.TopP, (UIntPtr)1));
+
+                
                 if (config.MinP > 0.0f)
                     Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_min_p(config.MinP, (UIntPtr)1));
 
+                
                 Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_temp(config.Temperature));
+
+                
                 Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_dist(config.Seed));
 
-                // **FIX: Evaluate the prompt batch**
+                // Evaluate prompt
                 if (!EvaluateBatch(promptTokens))
                     throw new Exception("Failed to evaluate prompt");
 
-                // Get special tokens
                 int eosToken = Llama.llama_vocab_eos(_vocab);
 
-                List<int> generatedTokens = new List<int>();
-
-                // **FIX: Generate NEW tokens (not re-evaluating prompt)**
+                // Generate tokens
                 for (int i = 0; i < config.MaxTokens; i++)
                 {
                     int nextToken = Llama.llama_sampler_sample(sampler, _context, -1);
@@ -221,7 +262,7 @@ namespace LlamaCSharp.Imp
 
                     generatedTokens.Add(nextToken);
 
-                    // **TEXT-BASED STOP CHECK (easier):**
+                    // Check stop strings
                     if (config.StopStrings != null && config.StopStrings.Length > 0)
                     {
                         var currentText = Detokenize(generatedTokens.ToArray());
@@ -230,12 +271,9 @@ namespace LlamaCSharp.Imp
                         {
                             if (currentText.EndsWith(stopStr))
                             {
-                                // Truncate and exit
                                 int stopIndex = currentText.LastIndexOf(stopStr);
-                                var finalText = currentText.Substring(0, stopIndex);
-
-                                // Early return with clean text
-                                var cleanTokens = Tokenize(finalText, addBos: false);
+                                var truncated = currentText.Substring(0, stopIndex);
+                                var cleanTokens = Tokenize(truncated, addBos: false);
                                 return Detokenize(cleanTokens, removeSpecial: true);
                             }
                         }
@@ -247,8 +285,110 @@ namespace LlamaCSharp.Imp
                     config.OnTokenGenerated?.Invoke(nextToken);
                 }
 
-                // **FIX: Only return the GENERATED tokens, not the prompt**
-                generatedTokens = allTokens.Skip(promptTokens.Length).ToList();
+                return Detokenize(generatedTokens.ToArray(), removeSpecial: true);
+            }
+            finally
+            {
+                Llama.llama_sampler_free(sampler);
+            }
+        }
+        /// <summary>
+        /// Generate text from a prompt.
+        /// </summary>
+        public async Task<string> GenerateAsync( string prompt, GenerationConfig config = null, CancellationToken cancellationToken = default)
+        {
+            
+            config ??= new GenerationConfig();
+
+            var promptTokens = Tokenize(prompt, addBos: true);
+            var generatedTokens = new List<int>();
+
+            var memory = Llama.llama_get_memory(_context);
+            Llama.llama_memory_clear(memory, data: false);
+
+            var samplerParams = Llama.llama_sampler_chain_default_params();
+            var sampler = Llama.llama_sampler_chain_init(samplerParams);
+
+            try
+            {
+                // Add samplers in order
+
+                if (config.RepeatPenaltyTokens > 0 && config.RepeatPenalty != 1.0f)
+                {
+                    Llama.llama_sampler_chain_add(
+                        sampler,
+                        Llama.llama_sampler_init_penalties(
+                            penalty_last_n: config.RepeatPenaltyTokens,
+                            penalty_repeat: config.RepeatPenalty,
+                            penalty_freq: config.FrequencyPenalty,
+                            penalty_present: config.PresencePenalty
+                        )
+                    );
+                }
+
+                
+                if (config.TopK > 0)
+                    Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_top_k(config.TopK));
+
+              
+                if (config.TopP < 1.0f)
+                    Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_top_p(config.TopP, (UIntPtr)1));
+
+                
+                if (config.MinP > 0.0f)
+                    Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_min_p(config.MinP, (UIntPtr)1));
+
+                
+                Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_temp(config.Temperature));
+
+                
+                Llama.llama_sampler_chain_add(sampler, Llama.llama_sampler_init_dist(config.Seed));
+
+                // Evaluate prompt
+                if (!EvaluateBatch(promptTokens))
+                    throw new Exception("Failed to evaluate prompt");
+
+                int eosToken = Llama.llama_vocab_eos(_vocab);
+
+                // Generate tokens
+                for (int i = 0; i < config.MaxTokens; i++)
+                {
+
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    
+
+                    int nextToken = Llama.llama_sampler_sample(sampler, _context, -1);
+
+                    if (nextToken == eosToken)
+                        break;
+
+                    generatedTokens.Add(nextToken);
+
+                    // Check stop strings
+                    if (config.StopStrings != null && config.StopStrings.Length > 0)
+                    {
+                        var currentText = Detokenize(generatedTokens.ToArray());
+
+                        foreach (var stopStr in config.StopStrings)
+                        {
+                            if (currentText.EndsWith(stopStr))
+                            {
+                                int stopIndex = currentText.LastIndexOf(stopStr);
+                                var truncated = currentText.Substring(0, stopIndex);
+                                var cleanTokens = Tokenize(truncated, addBos: false);
+                                return Detokenize(cleanTokens, removeSpecial: true);
+                            }
+                        }
+                    }
+
+                    if (!EvaluateBatch(new[] { nextToken }))
+                        break;
+
+                    config.OnTokenGenerated?.Invoke(nextToken);
+                    await Task.Delay(300);
+                }
+
                 return Detokenize(generatedTokens.ToArray(), removeSpecial: true);
             }
             finally
@@ -336,39 +476,47 @@ namespace LlamaCSharp.Imp
             }
         }
 
-        public string BuildMistralPrompt(List<ChatMessage> messages)
+        /// <summary>
+        /// Get the model's built-in chat template (if it has one)
+        /// </summary>
+        public string GetChatTemplate()
         {
-            var sb = new StringBuilder();
-            var system = messages.FirstOrDefault(m => m.Role == "system");
+            var templatePtr = Llama.llama_model_chat_template(_model, IntPtr.Zero);
 
-            if (system != null)
-            {
-                sb.Append($"<s>[INST] {system.Content}\n\n");
-            }
-            else
-            {
-                sb.Append("<s>[INST] ");
-            }
+            if (templatePtr == IntPtr.Zero)
+                return null;  // Model doesn't have a template
 
-            for (int i = 1; i < messages.Count; i++)
-            {
-                var msg = messages[i];
-
-                if (msg.Role == "user")
-                {
-                    if (i > 1) sb.Append("[INST] ");
-                    sb.Append(msg.Content);
-                    sb.Append(" [/INST]");
-                }
-                else if (msg.Role == "assistant")
-                {
-                    sb.Append($" {msg.Content}</s>");
-                }
-            }
-
-            return sb.ToString();
+            return Marshal.PtrToStringUTF8(templatePtr);
         }
 
+        /// <summary>
+        /// Detect the chat format from the template
+        /// </summary>
+        public ChatFormat DetectChatFormat()
+        {
+            var template = GetChatTemplate();
+
+            if (template == null)
+                return ChatFormat.Unknown;
+
+            // Check for known patterns
+            if (template.Contains("<|im_start|>") && template.Contains("<|im_end|>"))
+                return ChatFormat.ChatML;
+
+            if (template.Contains("[INST]") && template.Contains("[/INST]"))
+                return ChatFormat.Mistral;
+
+            if (template.Contains("<<SYS>>") && template.Contains("<</SYS>>"))
+                return ChatFormat.Llama2;
+
+            if (template.Contains("<|user|>") && template.Contains("<|assistant|>"))
+                return ChatFormat.Zephyr;
+
+            if (template.Contains("<start_of_turn>"))
+                return ChatFormat.Gemma;
+
+            return ChatFormat.Unknown;
+        }
 
         /// <summary>
         /// Evaluate a batch of tokens.

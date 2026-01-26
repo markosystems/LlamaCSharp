@@ -12,6 +12,11 @@ namespace LlamaCSharp.Imp
         public uint Seed { get; set; } = 0xFFFFFFFF;
         public Action<int> OnTokenGenerated { get; set; }
         public string[] StopStrings { get; set; } = null;
+
+        public int RepeatPenaltyTokens { get; set; } = 64;      // Last N tokens to penalize (0 = disabled)
+        public float RepeatPenalty { get; set; } = 1.0f;        // 1.0 = no penalty, >1.0 = penalize repeats
+        public float FrequencyPenalty { get; set; } = 0.0f;     // 0.0 = disabled
+        public float PresencePenalty { get; set; } = 0.0f;
     }
 
 }

@@ -7,7 +7,8 @@ namespace LlamaCSharp.Imp
     public class LlamaConfig
     {
         public int ContextSize { get; set; } = 4096;
-        public int BatchSize { get; set; } = 512;
+        public int BatchSize { get; set; } = 2048;
+        public int UBatchSize { get; set; } = 512;
         public int Threads { get; set; } = 8;
         public int ThreadsBatch { get; set; } = 8;
         public int GpuLayers { get; set; } = 0;

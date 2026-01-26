@@ -165,6 +165,16 @@ namespace LlamaCSharp
 
         [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
         public static extern long llama_time_us();
+        [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr llama_model_chat_template(llama_model model,IntPtr name);
+
+        // Penalties sampler
+        [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern llama_sampler llama_sampler_init_penalties(
+            int penalty_last_n,      // last n tokens to penalize (0 = disable, -1 = ctx size)
+            float penalty_repeat,    // 1.0 = disabled
+            float penalty_freq,      // 0.0 = disabled  
+            float penalty_present);  // 0.0 = disabled
 
         #endregion
 
