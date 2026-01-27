@@ -295,7 +295,7 @@ namespace LlamaCSharp.Imp
         /// <summary>
         /// Generate text from a prompt.
         /// </summary>
-        public async Task<string> GenerateAsync( string prompt, GenerationConfig config = null, CancellationToken cancellationToken = default)
+        public async Task<string> GenerateAsync(string prompt, GenerationConfig config = null, CancellationToken cancellationToken = default, IProgress<GenerationProgress> progress = null)
         {
             
             config ??= new GenerationConfig();
@@ -356,9 +356,15 @@ namespace LlamaCSharp.Imp
 
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    
 
-                    int nextToken = Llama.llama_sampler_sample(sampler, _context, -1);
+                    int nextToken = await Task.Run(()=>Llama.llama_sampler_sample(sampler, _context, -1));
+                    progress?.Report(new GenerationProgress
+                    {
+                        CurrentChunk = i + 1,
+                        TotalChunks = config.MaxTokens,
+                        PercentComplete = (int)((i / (float)config.MaxTokens) * 100),
+                        Status = $"Token {i + 1}/{config.MaxTokens}..."
+                    });
 
                     if (nextToken == eosToken)
                         break;
@@ -386,9 +392,16 @@ namespace LlamaCSharp.Imp
                         break;
 
                     config.OnTokenGenerated?.Invoke(nextToken);
-                    await Task.Delay(300);
+                    
                 }
-
+                progress?.Report(new GenerationProgress
+                {
+                    CurrentChunk = config.MaxTokens,
+                    TotalChunks = config.MaxTokens,
+                    PercentComplete = 100,
+                    Status = "Complete!",
+                    IsComplete = true
+                });
                 return Detokenize(generatedTokens.ToArray(), removeSpecial: true);
             }
             finally

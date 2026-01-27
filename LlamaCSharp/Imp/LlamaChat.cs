@@ -142,7 +142,8 @@ namespace LlamaCSharp.Imp
     string prompt,
     GenerationConfig generation = null,
     bool temp = false,
-    CancellationToken cancellationToken = default)
+    CancellationToken cancellationToken = default,
+    IProgress<GenerationProgress> progress = null)
         {
             if (!ChatAlive)
                 throw new InvalidOperationException("Chat is not alive");
@@ -158,7 +159,7 @@ namespace LlamaCSharp.Imp
 
             // Generate async
             var config = generation ?? GenerationConfig;
-            var response = await Model.GenerateAsync(formattedPrompt, config, cancellationToken: cancellationToken);
+            var response = await Model.GenerateAsync(formattedPrompt, config, cancellationToken: cancellationToken, progress: progress);
 
             // Update config if not temp
             if (generation != null && !temp)
