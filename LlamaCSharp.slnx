@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Documentation/">
+    <File Path="Index.html" />
+  </Folder>
   <Project Path="LlamaCSharp/LlamaCSharp.csproj" />
   <Project Path="test/test.csproj" />
 </Solution>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatFormation & ChatFormat Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .api-doc {
+            background: #252526;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .api-title {
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+            margin: 0 0 20px 0;
+            color: #007acc;
+        }
+        .summary {
+            background-color: #1e3a3a;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: #b4d7ff;
+        }
+        .syntax {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .syntax code {
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section h3 {
+            color: #007acc;
+            border-bottom: 2px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .member {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border-left: 3px solid #3e3e42;
+        }
+        .member:hover {
+            border-left-color: #007acc;
+            background-color: #252526;
+        }
+        .member-signature {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+            margin-bottom: 10px;
+            border: 1px solid #3e3e42;
+        }
+        .member-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #b4d7ff;
+            margin-bottom: 8px;
+        }
+        .param, .returns, .exceptions, .remarks {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #cccccc;
+        }
+        .param-name, .exception-name {
+            font-weight: bold;
+            color: #9cdcfe;
+        }
+        .code-example {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #4ec9b0;
+            border: 1px solid #3e3e42;
+        }
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            display: block;
+            color: #d4d4d4;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #3d2d1f;
+            border-left: 4px solid #d7ba7d;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #d7ba7d;
+        }
+        .note {
+            background-color: #1a3a3a;
+            border-left: 4px solid #4ec9b0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #4ec9b0;
+        }
+        .see-also {
+            background-color: #252526;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .see-also ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .see-also li {
+            margin: 5px 0;
+        }
+        .see-also a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .see-also a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #3e3e42;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1e1e1e;
+            color: #b4d7ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-doc">
+        <h2 class="api-title">ChatFormation & ChatFormat</h2>
+
+        <div class="summary">
+            <p>Chat formatting utilities that convert conversation messages into prompt strings formatted according to different model templates.</p>
+        </div>
+
+        <div class="section">
+            <h3>Overview</h3>
+            <p>
+                Different language models expect chat messages in specific formats. Some use XML-like tags (ChatML), others use role markers (Mistral, Llama2), 
+                and others use different conventions entirely (Gemma, Zephyr). The <code>ChatFormation</code> class handles this complexity by providing 
+                format-specific builders that transform a list of chat messages into the properly formatted prompt string.
+            </p>
+        </div>
+
+        <!-- ChatFormation Static Class -->
+        <div class="section">
+            <h3>ChatFormation Class (Static)</h3>
+
+            <div class="member">
+                <div class="member-title">FormatChat (Static Method)</div>
+                <div class="member-signature">
+                    public static string FormatChat(List&lt;ChatMessage&gt; messages, ChatFormat format)
+                </div>
+                <p><strong>Summary:</strong> Formats a list of chat messages into a prompt string according to the specified format.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">messages</span> - List of ChatMessage objects to format. Usually includes a system message and user/assistant exchange.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">format</span> - The ChatFormat enum value indicating which template to use.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A formatted prompt string ready for text generation.
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Automatic Format Detection & Formatting</div>
+                    <code>
+var messages = new List&lt;ChatMessage&gt;
+{
+    new ChatMessage { Role = "system", Content = "You are a helpful assistant." },
+    new ChatMessage { Role = "user", Content = "What is 2+2?" }
+};
+
+// Auto-detected by LlamaChat, but can also format manually
+var formatted = ChatFormation.FormatChat(messages, ChatFormat.ChatML);
+var response = inference.Generate(formatted);
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Format-Specific Handling</div>
+                    <code>
+// Same messages, different formats produce different strings
+var chatMLFormat = ChatFormation.FormatChat(messages, ChatFormat.ChatML);
+var mistralFormat = ChatFormation.FormatChat(messages, ChatFormat.Mistral);
+var llamaFormat = ChatFormation.FormatChat(messages, ChatFormat.Llama2);
+
+Console.WriteLine($"ChatML:\n{chatMLFormat}\n");
+Console.WriteLine($"Mistral:\n{mistralFormat}\n");
+Console.WriteLine($"Llama2:\n{llamaFormat}");
+                    </code>
+                </div>
+
+                <div class="remarks">
+                    <strong>Automatic Usage:</strong> LlamaChat automatically detects the model's format and calls this internally, 
+                    so manual usage is rarely needed.
+                </div>
+            </div>
+        </div>
+
+        <!-- ChatFormat Enum -->
+        <div class="section">
+            <h3>ChatFormat Enum</h3>
+
+            <p>
+                The <code>ChatFormat</code> enum represents different chat message formatting standards used by various language models.
+            </p>
+
+            <div class="member">
+                <div class="member-title">Unknown</div>
+                <div class="member-signature">ChatFormat.Unknown = 0</div>
+                <p><strong>Summary:</strong> Format could not be automatically detected.</p>
+                <div class="remarks">
+                    Falls back to plain text formatting (Role: Content).
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Mistral</div>
+                <div class="member-signature">ChatFormat.Mistral</div>
+                <p><strong>Summary:</strong> Mistral/Openchat format using instruction tags.</p>
+                <div class="remarks">
+                    <strong>Pattern:</strong> &lt;s&gt;[INST] message [/INST] response &lt;/s&gt;
+                    <br/><strong>Models:</strong> Mistral, Openchat, Orca
+                </div>
+                <div class="code-example">
+                    <div class="example-title">Example Output</div>
+                    <code>
+&lt;s&gt;[INST] You are a helpful assistant.
+What is 2+2? [/INST] 2+2 equals 4. &lt;/s&gt;
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Llama2</div>
+                <div class="member-signature">ChatFormat.Llama2</div>
+                <p><strong>Summary:</strong> Llama2 format with system prompt markers.</p>
+                <div class="remarks">
+                    <strong>Pattern:</strong> &lt;s&gt;[INST] &lt;&lt;SYS&gt;&gt; system &lt;&lt;/SYS&gt;&gt; user message [/INST] assistant response &lt;/s&gt;
+                    <br/><strong>Models:</strong> Llama2, Llama2-Chat
+                </div>
+                <div class="code-example">
+                    <div class="example-title">Example Output</div>
+                    <code>
+&lt;s&gt;[INST] &lt;&lt;SYS&gt;&gt;
+You are a helpful assistant.
+&lt;&lt;/SYS&gt;&gt;
+
+What is 2+2? [/INST] 2+2 equals 4. &lt;/s&gt;
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ChatML</div>
+                <div class="member-signature">ChatFormat.ChatML</div>
+                <p><strong>Summary:</strong> ChatML (Chat Markup Language) format using im_start/im_end tags.</p>
+                <div class="remarks">
+                    <strong>Pattern:</strong> &lt;|im_start|&gt;role\ncontent\n&lt;|im_end|&gt;
+                    <br/><strong>Models:</strong> OpenAI GPT models, Neural Chat, Dolphin, many fine-tuned models
+                    <br/><strong>Popularity:</strong> Most common modern format
+                </div>
+                <div class="code-example">
+                    <div class="example-title">Example Output</div>
+                    <code>
+&lt;|im_start|&gt;system
+You are a helpful assistant.
+&lt;|im_end|&gt;
+&lt;|im_start|&gt;user
+What is 2+2?
+&lt;|im_end|&gt;
+&lt;|im_start|&gt;assistant
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Zephyr</div>
+                <div class="member-signature">ChatFormat.Zephyr</div>
+                <p><strong>Summary:</strong> Zephyr format using inline role markers.</p>
+                <div class="remarks">
+                    <strong>Pattern:</strong> &lt;|user|&gt; message \n &lt;|assistant|&gt;
+                    <br/><strong>Models:</strong> Zephyr, some HuggingFace fine-tuned models
+                </div>
+                <div class="code-example">
+                    <div class="example-title">Example Output</div>
+                    <code>
+&lt;|system|&gt;
+You are a helpful assistant.
+&lt;|user|&gt;
+What is 2+2?
+&lt;|assistant|&gt;
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Gemma</div>
+                <div class="member-signature">ChatFormat.Gemma</div>
+                <p><strong>Summary:</strong> Gemma format using turn markers.</p>
+                <div class="remarks">
+                    <strong>Pattern:</strong> &lt;start_of_turn&gt;role\ncontent\n&lt;end_of_turn&gt;
+                    <br/><strong>Models:</strong> Google Gemma, Recital
+                </div>
+                <div class="code-example">
+                    <div class="example-title">Example Output</div>
+                    <code>
+&lt;start_of_turn&gt;user
+What is 2+2?
+&lt;end_of_turn&gt;
+&lt;start_of_turn&gt;model
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Format Comparison Table</h3>
+            <table>
+                <tr>
+                    <th>Format</th>
+                    <th>Pattern</th>
+                    <th>Example Models</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>ChatML</td>
+                    <td>&lt;|im_start|&gt;role\ncontent&lt;|im_end|&gt;</td>
+                    <td>GPT, Neural Chat, Dolphin</td>
+                    <td>Most Common</td>
+                </tr>
+                <tr>
+                    <td>Llama2</td>
+                    <td>&lt;s&gt;[INST] ... [/INST] ...&lt;/s&gt;</td>
+                    <td>Llama2-Chat</td>
+                    <td>Widely Used</td>
+                </tr>
+                <tr>
+                    <td>Mistral</td>
+                    <td>&lt;s&gt;[INST] ... [/INST] ...&lt;/s&gt;</td>
+                    <td>Mistral, Openchat</td>
+                    <td>Popular</td>
+                </tr>
+                <tr>
+                    <td>Gemma</td>
+                    <td>&lt;start_of_turn&gt;role...&lt;end_of_turn&gt;</td>
+                    <td>Google Gemma</td>
+                    <td>Modern</td>
+                </tr>
+                <tr>
+                    <td>Zephyr</td>
+                    <td>&lt;|role|&gt; content</td>
+                    <td>Zephyr</td>
+                    <td>Specialized</td>
+                </tr>
+                <tr>
+                    <td>Unknown</td>
+                    <td>Role: Content</td>
+                    <td>Fallback</td>
+                    <td>Default</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>Common Usage Patterns</h3>
+
+            <div class="member">
+                <div class="member-title">Automatic Detection (Recommended)</div>
+                <div class="code-example">
+                    <code>
+// LlamaChat automatically detects and uses the correct format
+using var chat = new LlamaChat("model.gguf");
+
+// Just send messages, formatting is handled automatically
+var response = chat.SendChat("Hello!");
+Console.WriteLine($"Model format: {chat.Format}");  // Shows detected format
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Manual Format Specification</div>
+                <div class="code-example">
+                    <code>
+var messages = new List&lt;ChatMessage&gt;
+{
+    new ChatMessage { Role = "system", Content = "You are helpful." },
+    new ChatMessage { Role = "user", Content = "Help me!" }
+};
+
+// If you know the model's format, format manually
+var formatted = ChatFormation.FormatChat(messages, ChatFormat.Mistral);
+var response = inference.Generate(formatted);
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Testing Different Formats</div>
+                <div class="code-example">
+                    <code>
+var formats = new[] 
+{ 
+    ChatFormat.ChatML, 
+    ChatFormat.Llama2, 
+    ChatFormat.Mistral 
+};
+
+foreach (var format in formats)
+{
+    var formatted = ChatFormation.FormatChat(messages, format);
+    Console.WriteLine($"=== {format} ===");
+    Console.WriteLine(formatted);
+    Console.WriteLine();
+}
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Best Practices</h3>
+            <ul>
+                <li><strong>Let LlamaChat Detect:</strong> The automatic detection in LlamaChat is reliable; trust it unless you have specific reasons not to</li>
+                <li><strong>Verify with Model Card:</strong> Check the model's HuggingFace card or documentation for the correct format</li>
+                <li><strong>System Message Always First:</strong> In any format, system message should be the first message in the list</li>
+                <li><strong>Consistent Formatting:</strong> Don't mix formats within a single conversation</li>
+                <li><strong>Special Characters:</strong> Some formats are more sensitive to newlines and whitespace; be consistent</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>See Also</h3>
+            <ul>
+                <li><a href="LlamaChat.html">LlamaChat</a> - Uses ChatFormation internally for message formatting</li>
+                <li><a href="LlamaInference.html">LlamaInference</a> - FormatChat method for custom formatting</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

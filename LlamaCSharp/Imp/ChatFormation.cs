@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace LlamaCSharp.Imp
@@ -144,6 +145,16 @@ namespace LlamaCSharp.Imp
 
             sb.Append("Assistant:");
             return sb.ToString();
+        }
+
+        public static string GetChatTemplate(IntPtr _model)
+        {
+            var templatePtr = Llama.llama_model_chat_template(_model, IntPtr.Zero);
+
+            if (templatePtr == IntPtr.Zero)
+                return null;  // Model doesn't have a template
+
+            return Marshal.PtrToStringUTF8(templatePtr);
         }
     }
 

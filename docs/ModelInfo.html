@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModelInfo Class Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .api-doc {
+            background: #252526;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .api-title {
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+            margin: 0 0 20px 0;
+            color: #007acc;
+        }
+        .summary {
+            background-color: #1e3a3a;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: #b4d7ff;
+        }
+        .syntax {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .syntax code {
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section h3 {
+            color: #007acc;
+            border-bottom: 2px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .member {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border-left: 3px solid #3e3e42;
+        }
+        .member:hover {
+            border-left-color: #007acc;
+            background-color: #252526;
+        }
+        .member-signature {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+            margin-bottom: 10px;
+            border: 1px solid #3e3e42;
+        }
+        .member-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #b4d7ff;
+            margin-bottom: 8px;
+        }
+        .param, .returns, .exceptions, .remarks {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #cccccc;
+        }
+        .param-name, .exception-name {
+            font-weight: bold;
+            color: #9cdcfe;
+        }
+        .code-example {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #4ec9b0;
+            border: 1px solid #3e3e42;
+        }
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            display: block;
+            color: #d4d4d4;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #3d2d1f;
+            border-left: 4px solid #d7ba7d;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #d7ba7d;
+        }
+        .note {
+            background-color: #1a3a3a;
+            border-left: 4px solid #4ec9b0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #4ec9b0;
+        }
+        .see-also {
+            background-color: #252526;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .see-also ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .see-also li {
+            margin: 5px 0;
+        }
+        .see-also a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .see-also a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #3e3e42;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1e1e1e;
+            color: #b4d7ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-doc">
+        <h2 class="api-title">ModelInfo Class</h2>
+
+        <div class="summary">
+            <p>Data class that contains metadata and architectural information about a loaded language model.</p>
+        </div>
+
+        <div class="syntax">
+            <pre><code>public class ModelInfo</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>Remarks</h3>
+            <p>
+                The <code>ModelInfo</code> class provides detailed information about loaded models, including their architecture, 
+                capacity, and capabilities. This information is useful for understanding model limitations, optimizing configuration, 
+                and displaying model details to users.
+            </p>
+            <p>
+                <strong>Common Use Cases:</strong>
+            </p>
+            <ul>
+                <li>Determining memory requirements before loading a model</li>
+                <li>Configuring appropriate context sizes based on model architecture</li>
+                <li>Displaying model information in UI</li>
+                <li>Validating model compatibility with the application</li>
+                <li>Logging model specifications for debugging</li>
+            </ul>
+            <p>
+                <strong>Data Population:</strong> This class is typically instantiated by the <code>LlamaChat</code> constructor 
+                via the static <code>GetModelInfo()</code> method.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>Properties</h3>
+
+            <div class="member">
+                <div class="member-title">Description</div>
+                <div class="member-signature">public string Description { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the model description string containing architecture and parameter info.</p>
+                
+                <div class="remarks">
+                    <strong>Format:</strong> Typically contains model name, architecture type, parameter count, and other details provided by llama.cpp.
+                    <br/><strong>Example:</strong> "Llama 2 7B (q4_k_m quantization)"
+                </div>
+
+                <div class="code-example">
+                    <code>
+var modelInfo = ModelInfo.GetModelInfo(modelPtr);
+Console.WriteLine($"Model: {modelInfo.Description}");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ContextLength</div>
+                <div class="member-signature">public int ContextLength { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the context window size (in tokens) that the model was trained with.</p>
+                
+                <div class="remarks">
+                    <strong>Value Range:</strong> Typically 128 to 200,000+ tokens depending on the model
+                    <br/><strong>Training vs. Usage:</strong> This is the context length the model was trained on. Actual inference can sometimes use longer contexts (up to certain limits) depending on the model's RoPE implementation.
+                    <br/><strong>Impact:</strong> Larger context allows longer conversations but requires more memory for the KV cache.
+                </div>
+
+                <div class="code-example">
+                    <code>
+Console.WriteLine($"Model trained context: {modelInfo.ContextLength:N0} tokens");
+if (modelInfo.ContextLength < 4096)
+{
+    Console.WriteLine("Warning: Small context size, long documents may cause issues");
+}
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">EmbeddingSize</div>
+                <div class="member-signature">public int EmbeddingSize { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the dimensionality of the token embeddings (also called hidden size or d_model).</p>
+                
+                <div class="remarks">
+                    <strong>Value Range:</strong> Typically 256 to 12,288 dimensions
+                    <br/><strong>Architecture:</strong> All token representations in the model's layers use this dimensionality
+                    <br/><strong>Interpretation:</strong> Larger embeddings generally allow the model to capture more nuanced information
+                </div>
+
+                <div class="code-example">
+                    <code>
+Console.WriteLine($"Token embedding dimension: {modelInfo.EmbeddingSize}");
+Console.WriteLine($"This model uses {modelInfo.EmbeddingSize}-dimensional vectors for token representations");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">LayerCount</div>
+                <div class="member-signature">public int LayerCount { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the number of transformer layers in the model.</p>
+                
+                <div class="remarks">
+                    <strong>Value Range:</strong> Typically 12 to 120 layers
+                    <br/><strong>Impact on Performance:</strong> More layers usually mean better quality but slower inference
+                    <br/><strong>GPU Optimization:</strong> When using GPU acceleration via <code>GpuLayers</code>, this value determines how many layers can be offloaded (e.g., if set to 40, only the first 40 of possibly 80 total layers run on GPU)
+                </div>
+
+                <div class="code-example">
+                    <code>
+Console.WriteLine($"Number of layers: {modelInfo.LayerCount}");
+var llamaConfig = new LlamaConfig
+{
+    GpuLayers = modelInfo.LayerCount  // Offload all layers to GPU
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ParameterCount</div>
+                <div class="member-signature">public long ParameterCount { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the total number of trainable parameters in the model.</p>
+                
+                <div class="remarks">
+                    <strong>Value Range:</strong> Typically 7 billion to 405 billion+ parameters (7B, 13B, 70B, etc.)
+                    <br/><strong>Memory Impact:</strong> Roughly proportional to the file size, though quantization reduces this
+                    <br/><strong>Interpretation:</strong> Generally, more parameters = better quality but more memory and slower inference
+                </div>
+
+                <div class="code-example">
+                    <code>
+Console.WriteLine($"Model size: {modelInfo.ParameterCount:N0} parameters");
+Console.WriteLine($"That's {modelInfo.ParameterCount / 1_000_000_000}B parameters");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ModelSize</div>
+                <div class="member-signature">public long ModelSize { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the file size of the model in bytes.</p>
+                
+                <div class="remarks">
+                    <strong>Interpretation:</strong> The on-disk size of the model file, affected by quantization
+                    <br/><strong>Memory Impact:</strong> Approximately equals RAM required when loading the model (before KV cache allocation)
+                </div>
+
+                <div class="code-example">
+                    <code>
+long sizeInMB = modelInfo.ModelSize / (1024 * 1024);
+long sizeInGB = sizeInMB / 1024;
+Console.WriteLine($"Model file size: {sizeInGB:N2} GB");
+
+// Check if there's enough RAM
+long availableRAM = GC.GetTotalMemory(false);
+if (modelInfo.ModelSize > availableRAM / 2)
+{
+    Console.WriteLine("Warning: Model may exceed available RAM!");
+}
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">HasEncoder</div>
+                <div class="member-signature">public bool HasEncoder { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets whether the model has an encoder component (true for encoder-only and encoder-decoder models).</p>
+                
+                <div class="remarks">
+                    <strong>Model Types:</strong>
+                    <ul>
+                        <li>Decoder-only (most LLMs): HasEncoder = false</li>
+                        <li>Encoder-only (BERT, etc.): HasEncoder = true, HasDecoder = false</li>
+                        <li>Encoder-Decoder (T5, BART, etc.): HasEncoder = true, HasDecoder = true</li>
+                    </ul>
+                </div>
+
+                <div class="code-example">
+                    <code>
+if (modelInfo.HasEncoder && modelInfo.HasDecoder)
+{
+    Console.WriteLine("Encoder-decoder model (e.g., T5)");
+}
+else if (modelInfo.HasDecoder)
+{
+    Console.WriteLine("Decoder-only model (e.g., GPT, Llama)");
+}
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">HasDecoder</div>
+                <div class="member-signature">public bool HasDecoder { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets whether the model has a decoder component.</p>
+                
+                <div class="remarks">
+                    <strong>Typical Values:</strong>
+                    <ul>
+                        <li>True for LLMs (GPT, Llama, Mistral, etc.) - decoder is the main component for generation</li>
+                        <li>False for encoder-only models</li>
+                    </ul>
+                    <strong>Impact:</strong> Determines whether the model can perform text generation (decoder required).
+                </div>
+
+                <div class="code-example">
+                    <code>
+if (!modelInfo.HasDecoder)
+{
+    Console.WriteLine("This model cannot generate text; encoder-only models are for embedding/classification");
+}
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Methods</h3>
+
+            <div class="member">
+                <div class="member-title">GetModelInfo (Static)</div>
+                <div class="member-signature">
+                    public static ModelInfo GetModelInfo(IntPtr model)
+                </div>
+                <p><strong>Summary:</strong> Creates and populates a ModelInfo instance from a loaded model pointer.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">model</span> - A native IntPtr to a loaded llama model.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A populated ModelInfo instance with all model metadata.
+                </div>
+
+                <div class="exceptions">
+                    <div class="param">
+                        <span class="exception-name">ArgumentException</span> - Thrown if the model pointer is invalid.
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Retrieve Model Information</div>
+                    <code>
+var modelParams = Llama.llama_model_default_params();
+IntPtr modelPtr = Llama.llama_model_load_from_file("model.gguf", modelParams);
+
+if (modelPtr != IntPtr.Zero)
+{
+    var info = ModelInfo.GetModelInfo(modelPtr);
+    Console.WriteLine(info);  // Uses ToString()
+}
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Check Model Capabilities</div>
+                    <code>
+var info = ModelInfo.GetModelInfo(modelPtr);
+
+Console.WriteLine($"Can generate text: {info.HasDecoder}");
+Console.WriteLine($"Can encode text: {info.HasEncoder}");
+Console.WriteLine($"Max context: {info.ContextLength:N0} tokens");
+Console.WriteLine($"Model size: {info.ModelSize / (1024 * 1024):N0} MB");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ToString</div>
+                <div class="member-signature">
+                    public override string ToString()
+                </div>
+                <p><strong>Summary:</strong> Returns a formatted string representation of the model information.</p>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A multi-line string containing description, context, layers, parameters, and size.
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Display Model Info</div>
+                    <code>
+var info = ModelInfo.GetModelInfo(modelPtr);
+Console.WriteLine(info);
+/* Example output:
+Llama 2 7B
+Context: 4,096, 
+Layers: 32, 
+Params: 6,738,415,616, 
+Size: 3,825 MB
+*/
+                    </code>
+                </div>
+
+                <div class="remarks">
+                    <strong>Format:</strong> The output includes:
+                    <ul>
+                        <li>Model description from llama.cpp</li>
+                        <li>Context length in thousands</li>
+                        <li>Number of layers</li>
+                        <li>Parameter count</li>
+                        <li>File size in MB</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>See Also</h3>
+            <ul>
+                <li><a href="LlamaChat.html">LlamaChat</a> - Uses ModelInfo to configure itself</li>
+                <li><a href="LlamaConfig.html">LlamaConfig</a> - Configuration based on model metadata</li>
+            </ul>
+        </div>
+    </div>
+</body>

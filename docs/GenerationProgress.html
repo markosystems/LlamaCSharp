@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenerationProgress Class Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .api-doc {
+            background: #252526;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .api-title {
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+            margin: 0 0 20px 0;
+            color: #007acc;
+        }
+        .summary {
+            background-color: #1e3a3a;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: #b4d7ff;
+        }
+        .syntax {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .syntax code {
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section h3 {
+            color: #007acc;
+            border-bottom: 2px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .member {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border-left: 3px solid #3e3e42;
+        }
+        .member:hover {
+            border-left-color: #007acc;
+            background-color: #252526;
+        }
+        .member-signature {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+            margin-bottom: 10px;
+            border: 1px solid #3e3e42;
+        }
+        .member-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #b4d7ff;
+            margin-bottom: 8px;
+        }
+        .param, .returns, .exceptions, .remarks {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #cccccc;
+        }
+        .param-name, .exception-name {
+            font-weight: bold;
+            color: #9cdcfe;
+        }
+        .code-example {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #4ec9b0;
+            border: 1px solid #3e3e42;
+        }
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            display: block;
+            color: #d4d4d4;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #3d2d1f;
+            border-left: 4px solid #d7ba7d;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #d7ba7d;
+        }
+        .note {
+            background-color: #1a3a3a;
+            border-left: 4px solid #4ec9b0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #4ec9b0;
+        }
+        .see-also {
+            background-color: #252526;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .see-also ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .see-also li {
+            margin: 5px 0;
+        }
+        .see-also a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .see-also a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #3e3e42;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1e1e1e;
+            color: #b4d7ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-doc">
+        <h2 class="api-title">GenerationProgress Class</h2>
+
+        <div class="summary">
+            <p>Data class representing the progress state of multi-chunk text generation operations.</p>
+        </div>
+
+        <div class="syntax">
+            <pre><code>public class GenerationProgress</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>Remarks</h3>
+            <p>
+                The <code>GenerationProgress</code> class is used to report progress updates during asynchronous chunked generation 
+                operations. It provides information about the current generation stage, completion percentage, and the latest generated content.
+            </p>
+            <p>
+                <strong>Usage Context:</strong> Primarily used with the <code>ChunkedGenerator.GenerateAsync()</code> method through 
+                an <code>IProgress&lt;GenerationProgress&gt;</code> parameter to enable UI updates or logging of generation progress.
+            </p>
+            <p>
+                <strong>Lifecycle:</strong>
+            </p>
+            <ul>
+                <li>One report per chunk generated</li>
+                <li>Additional reports may occur between chunks for status updates</li>
+                <li>Final report has <code>IsComplete = true</code></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>Properties</h3>
+
+            <div class="member">
+                <div class="member-title">CurrentChunk</div>
+                <div class="member-signature">public int CurrentChunk { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the index of the chunk currently being processed.</p>
+                
+                <div class="remarks">
+                    <strong>Value Range:</strong> 1-based index (first chunk is 1, not 0)
+                    <br/><strong>Example:</strong> In a 10-chunk generation, this ranges from 1 to 10.
+                </div>
+
+                <div class="code-example">
+                    <code>
+var progress = new GenerationProgress { CurrentChunk = 3, TotalChunks = 10 };
+Console.WriteLine($"Processing chunk {progress.CurrentChunk} of {progress.TotalChunks}");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">TotalChunks</div>
+                <div class="member-signature">public int TotalChunks { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the total number of chunks to generate.</p>
+                
+                <div class="remarks">
+                    <strong>Usage:</strong> Combined with <code>CurrentChunk</code> to calculate progress percentage.
+                </div>
+
+                <div class="code-example">
+                    <code>
+float percentComplete = (progress.CurrentChunk / (float)progress.TotalChunks) * 100;
+Console.WriteLine($"Progress: {percentComplete:F1}%");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">PercentComplete</div>
+                <div class="member-signature">public int PercentComplete { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the completion percentage (0-100).</p>
+                
+                <div class="remarks">
+                    <strong>Calculation:</strong> Typically calculated as (CurrentChunk / TotalChunks) * 100
+                    <br/><strong>Range:</strong> 0 to 100 inclusive
+                    <br/><strong>Precision:</strong> Integer values; sub-percentage precision is not supported
+                </div>
+
+                <div class="code-example">
+                    <code>
+var progress = new GenerationProgress { PercentComplete = 75 };
+Console.WriteLine($"[{progress.PercentComplete}%] {new string('?', progress.PercentComplete / 5)}");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Status</div>
+                <div class="member-signature">public string Status { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets a human-readable status message describing the current operation.</p>
+                
+                <div class="remarks">
+                    <strong>Examples:</strong>
+                    <ul>
+                        <li>"Generating chunk 3/10..."</li>
+                        <li>"Chunk 5 complete"</li>
+                        <li>"Complete!"</li>
+                        <li>"Evaluating prompt..."</li>
+                    </ul>
+                </div>
+
+                <div class="code-example">
+                    <code>
+var progress = new GenerationProgress 
+{ 
+    Status = "Generating chunk 2 of 5..." 
+};
+Console.WriteLine(progress.Status);  // Output: "Generating chunk 2 of 5..."
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">LatestChunk</div>
+                <div class="member-signature">public string LatestChunk { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the text generated in the most recent chunk.</p>
+                
+                <div class="remarks">
+                    <strong>Content:</strong> The raw text output from the latest chunk generation, before any post-processing.
+                    <br/><strong>Null Handling:</strong> May be null during intermediate progress updates.
+                    <br/><strong>Typical Size:</strong> Usually 100-500 characters depending on configuration.
+                </div>
+
+                <div class="code-example">
+                    <code>
+if (!string.IsNullOrEmpty(progress.LatestChunk))
+{
+    Console.WriteLine($"Latest text: {progress.LatestChunk.Substring(0, Math.Min(50, progress.LatestChunk.Length))}...");
+}
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">IsComplete</div>
+                <div class="member-signature">public bool IsComplete { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets a value indicating whether the generation operation is complete.</p>
+                
+                <div class="remarks">
+                    <strong>When True:</strong> Generation has finished; this is the final progress report.
+                    <br/><strong>Common Pattern:</strong> Check this flag to update UI state or close progress dialogs.
+                </div>
+
+                <div class="code-example">
+                    <code>
+progress = new GenerationProgress
+{
+    CurrentChunk = 10,
+    TotalChunks = 10,
+    PercentComplete = 100,
+    Status = "Complete!",
+    IsComplete = true
+};
+
+if (progress.IsComplete)
+{
+    Console.WriteLine("Generation finished successfully.");
+    // Update UI, close dialog, etc.
+}
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Common Usage Patterns</h3>
+
+            <div class="member">
+                <div class="member-title">IProgress&lt;GenerationProgress&gt; Integration</div>
+                <div class="member-signature">Pattern: Using with async operations</div>
+                
+                <div class="code-example">
+                    <div class="example-title">Progress Reporting in Async Context</div>
+                    <code>
+var generator = new ChunkedGenerator(inference, "Answer concisely.");
+
+var progress = new Progress&lt;GenerationProgress&gt;(report =>
+{
+    Console.WriteLine($"[{report.PercentComplete}%] {report.Status}");
+    
+    if (!string.IsNullOrEmpty(report.LatestChunk))
+    {
+        Console.WriteLine($"Generated: {report.LatestChunk}");
+    }
+    
+    if (report.IsComplete)
+    {
+        Console.WriteLine("Generation finished!");
+    }
+});
+
+var result = await generator.GenerateAsync(
+    "Explain photosynthesis",
+    chunks: 5,
+    progress: progress
+);
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Progress Bar Implementation</div>
+                <div class="member-signature">Pattern: Creating a progress display</div>
+                
+                <div class="code-example">
+                    <code>
+var progress = new Progress&lt;GenerationProgress&gt;(report =>
+{
+    // Draw ASCII progress bar
+    int barLength = 40;
+    int filledLength = (int)((report.PercentComplete / 100.0) * barLength);
+    string bar = new string('?', filledLength) + new string('?', barLength - filledLength);
+    
+    Console.WriteLine($"\r[{bar}] {report.PercentComplete}% - {report.Status}", 
+        Console.Out);
+    
+    if (report.IsComplete)
+    {
+        Console.WriteLine();  // New line after completion
+    }
+});
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>See Also</h3>
+            <ul>
+                <li><a href="ChunkedGenerator.html">ChunkedGenerator</a> - Uses this class for progress reporting</li>
+                <li><a href="LlamaInference.html">LlamaInference</a> - Core generation engine</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

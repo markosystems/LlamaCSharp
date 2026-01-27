@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LlamaConfig Class Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .api-doc {
+            background: #252526;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .api-title {
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+            margin: 0 0 20px 0;
+            color: #007acc;
+        }
+        .summary {
+            background-color: #1e3a3a;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: #b4d7ff;
+        }
+        .syntax {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .syntax code {
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section h3 {
+            color: #007acc;
+            border-bottom: 2px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .member {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border-left: 3px solid #3e3e42;
+        }
+        .member:hover {
+            border-left-color: #007acc;
+            background-color: #252526;
+        }
+        .member-signature {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+            margin-bottom: 10px;
+            border: 1px solid #3e3e42;
+        }
+        .member-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #b4d7ff;
+            margin-bottom: 8px;
+        }
+        .param, .returns, .exceptions, .remarks {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #cccccc;
+        }
+        .param-name, .exception-name {
+            font-weight: bold;
+            color: #9cdcfe;
+        }
+        .code-example {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #4ec9b0;
+            border: 1px solid #3e3e42;
+        }
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            display: block;
+            color: #d4d4d4;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #3d2d1f;
+            border-left: 4px solid #d7ba7d;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #d7ba7d;
+        }
+        .note {
+            background-color: #1a3a3a;
+            border-left: 4px solid #4ec9b0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #4ec9b0;
+        }
+        .see-also {
+            background-color: #252526;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .see-also ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .see-also li {
+            margin: 5px 0;
+        }
+        .see-also a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .see-also a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #3e3e42;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1e1e1e;
+            color: #b4d7ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-doc">
+        <h2 class="api-title">LlamaConfig Class</h2>
+
+        <div class="summary">
+            <p>Configuration class for model loading that controls context size, batch processing, GPU acceleration, and memory options.</p>
+        </div>
+
+        <div class="syntax">
+            <pre><code>public class LlamaConfig</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>Remarks</h3>
+            <p>
+                The <code>LlamaConfig</code> class is used when initializing a <code>LlamaInference</code> or <code>LlamaChat</code> instance 
+                to configure how the model is loaded and what resources it can utilize.
+            </p>
+            <p>
+                <strong>Key Concerns:</strong>
+            </p>
+            <ul>
+                <li><strong>Memory:</strong> Context size � batch size = KV cache memory. Large values can consume substantial RAM</li>
+                <li><strong>Speed:</strong> GPU layers significantly accelerate inference on compatible hardware</li>
+                <li><strong>Threading:</strong> More threads can improve CPU utilization but may reduce per-token speed if oversubscribed</li>
+                <li><strong>Disk Access:</strong> Mmap and mlock control how the model file is accessed from disk</li>
+            </ul>
+            <p>
+                <strong>Typical Configuration Process:</strong>
+            </p>
+            <ol>
+                <li>Set ContextSize based on model capabilities and your use case</li>
+                <li>Set GpuLayers to offload computation if GPU is available</li>
+                <li>Adjust Threads based on CPU core count</li>
+                <li>Use SilentMode=true to suppress llama.cpp logging</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h3>Properties</h3>
+
+            <div class="member">
+                <div class="member-title">ContextSize</div>
+                <div class="member-signature">public int ContextSize { get; set; } = 4096</div>
+                <p><strong>Summary:</strong> Maximum context window size in tokens.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 4096 tokens
+                    <br/><strong>Valid Range:</strong> 128 to model's maximum (typically 4K-200K depending on the model)
+                    <br/><strong>Impact:</strong> Larger contexts allow longer conversations but increase memory usage
+                    <br/><strong>Memory Cost:</strong> Approximately 2 � ContextSize � BatchSize bytes for the KV cache
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Context Size Selection</div>
+                    <code>
+// Small context for resource-constrained environments
+var smallConfig = new LlamaConfig { ContextSize = 2048 };
+
+// Large context for long conversations
+var largeConfig = new LlamaConfig { ContextSize = 8192 };
+
+// Maximum supported (depends on model)
+var maxConfig = new LlamaConfig { ContextSize = 32768 };
+                    </code>
+                </div>
+
+                <div class="warning">
+                    <strong>Warning:</strong> Setting context size larger than the model was trained for can lead to degraded quality.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">BatchSize</div>
+                <div class="member-signature">public int BatchSize { get; set; } = 2048</div>
+                <p><strong>Summary:</strong> Number of tokens processed per evaluation batch.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 2048 tokens
+                    <br/><strong>Valid Range:</strong> 1 to ContextSize
+                    <br/><strong>Effect:</strong> Larger batches are faster but use more memory
+                    <br/><strong>For LlamaChat:</strong> Used to calculate maximum history size
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Fast, memory-heavy
+var fastConfig = new LlamaConfig { BatchSize = 4096 };
+
+// Slower but lighter
+var lightConfig = new LlamaConfig { BatchSize = 512 };
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">UBatchSize</div>
+                <div class="member-signature">public int UBatchSize { get; set; } = 512</div>
+                <p><strong>Summary:</strong> Micro-batch size for GPU processing (logical batch splits).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 512 tokens
+                    <br/><strong>Advanced Parameter:</strong> Rarely needs adjustment
+                    <br/><strong>Purpose:</strong> GPU implementation detail for memory management
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Threads</div>
+                <div class="member-signature">public int Threads { get; set; } = 8</div>
+                <p><strong>Summary:</strong> Number of CPU threads to use for computation.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 8 threads
+                    <br/><strong>Recommendation:</strong> Set to CPU core count for optimal performance
+                    <br/><strong>Effect:</strong> More threads = better parallelization but potential contention
+                    <br/><strong>Query:</strong> Use Environment.ProcessorCount to get system core count
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Use all available CPU cores
+var config = new LlamaConfig 
+{ 
+    Threads = Environment.ProcessorCount 
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ThreadsBatch</div>
+                <div class="member-signature">public int ThreadsBatch { get; set; } = 8</div>
+                <p><strong>Summary:</strong> Number of threads for batch inference operations.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 8 threads
+                    <br/><strong>Typical Value:</strong> Usually same as Threads or slightly less
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">GpuLayers</div>
+                <div class="member-signature">public int GpuLayers { get; set; } = 0</div>
+                <p><strong>Summary:</strong> Number of transformer layers to offload to GPU (0 = CPU only).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 0 (GPU disabled)
+                    <br/><strong>Valid Range:</strong> 0 to total layer count
+                    <br/><strong>Supported Hardware:</strong> NVIDIA (CUDA), Apple (Metal), Intel (oneAPI)
+                    <br/><strong>Effect:</strong> Each GPU layer dramatically accelerates inference (typically 5-10� faster per layer on capable hardware)
+                    <br/><strong>Discovery:</strong> Use ModelInfo.LayerCount to determine max GPU layers
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Enabling GPU Acceleration</div>
+                    <code>
+// Check available GPU layers
+var modelInfo = ModelInfo.GetModelInfo(modelPtr);
+int maxLayers = modelInfo.LayerCount;
+
+// Offload all layers to GPU
+var gpuConfig = new LlamaConfig 
+{ 
+    GpuLayers = maxLayers 
+};
+
+// Partial GPU offload (if full allocation causes memory issues)
+var partialConfig = new LlamaConfig 
+{ 
+    GpuLayers = maxLayers / 2 
+};
+                    </code>
+                </div>
+
+                <div class="warning">
+                    <strong>Warning:</strong> If set too high, GPU memory will be exhausted and the model will fall back to CPU (very slow).
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">UseMmap</div>
+                <div class="member-signature">public bool UseMmap { get; set; } = true</div>
+                <p><strong>Summary:</strong> Uses memory-mapped file I/O for model loading (faster loading).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> true (enabled)
+                    <br/><strong>Benefit:</strong> Fast model loading from disk
+                    <br/><strong>Drawback:</strong> Uses more system memory for mapping
+                    <br/><strong>When to Disable:</strong> On systems with very limited virtual address space
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">UseMlock</div>
+                <div class="member-signature">public bool UseMlock { get; set; } = false</div>
+                <p><strong>Summary:</strong> Locks model in RAM (prevents swapping to disk).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> false (disabled)
+                    <br/><strong>Effect:</strong> Guarantees fast inference, prevents disk I/O due to paging
+                    <br/><strong>Cost:</strong> Requires sufficient free RAM and elevated permissions
+                    <br/><strong>When to Enable:</strong> For consistent performance with dedicated hardware
+                </div>
+
+                <div class="warning">
+                    <strong>Warning:</strong> Enabling on systems without sufficient RAM can cause system-wide slowdowns.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">SilentMode</div>
+                <div class="member-signature">public bool SilentMode { get; set; } = true</div>
+                <p><strong>Summary:</strong> Suppresses llama.cpp library logging output.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> true (silent)
+                    <br/><strong>Effect:</strong> No console spam from llama.cpp initialization and runtime logs
+                    <br/><strong>When to Disable:</strong> For debugging inference issues
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Show llama.cpp logs for debugging
+var debugConfig = new LlamaConfig { SilentMode = false };
+
+// Suppress all logs (production)
+var productionConfig = new LlamaConfig { SilentMode = true };
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Common Configurations</h3>
+
+            <div class="member">
+                <div class="member-title">CPU-Only (Default)</div>
+                <div class="code-example">
+                    <code>
+var cpuConfig = new LlamaConfig
+{
+    ContextSize = 4096,
+    BatchSize = 2048,
+    Threads = Environment.ProcessorCount,
+    GpuLayers = 0,
+    SilentMode = true
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">GPU Accelerated (NVIDIA/Metal)</div>
+                <div class="code-example">
+                    <code>
+var gpuConfig = new LlamaConfig
+{
+    ContextSize = 4096,
+    BatchSize = 2048,
+    GpuLayers = 40,  // Adjust to model's layer count
+    Threads = Environment.ProcessorCount / 2,
+    SilentMode = true
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Resource-Constrained</div>
+                <div class="code-example">
+                    <code>
+var lightConfig = new LlamaConfig
+{
+    ContextSize = 2048,
+    BatchSize = 512,
+    Threads = 4,
+    GpuLayers = 0,
+    UseMmap = true,
+    SilentMode = true
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">High-Performance</div>
+                <div class="code-example">
+                    <code>
+var highPerfConfig = new LlamaConfig
+{
+    ContextSize = 8192,
+    BatchSize = 4096,
+    GpuLayers = 80,  // Full GPU
+    Threads = Environment.ProcessorCount,
+    UseMlock = true,
+    SilentMode = true
+};
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>See Also</h3>
+            <ul>
+                <li><a href="LlamaInference.html">LlamaInference</a> - Uses this config for initialization</li>
+                <li><a href="LlamaChat.html">LlamaChat</a> - Accepts this config during construction</li>
+                <li><a href="ModelInfo.html">ModelInfo</a> - Provides layer count for GpuLayers configuration</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

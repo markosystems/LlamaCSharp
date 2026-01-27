@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LlamaChat Class Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .api-doc {
+            background: #252526;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .api-title {
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+            margin: 0 0 20px 0;
+            color: #007acc;
+        }
+        .summary {
+            background-color: #1e3a3a;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: #b4d7ff;
+        }
+        .syntax {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .syntax code {
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section h3 {
+            color: #007acc;
+            border-bottom: 2px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .member {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border-left: 3px solid #3e3e42;
+        }
+        .member:hover {
+            border-left-color: #007acc;
+            background-color: #252526;
+        }
+        .member-signature {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+            margin-bottom: 10px;
+            border: 1px solid #3e3e42;
+        }
+        .member-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #b4d7ff;
+            margin-bottom: 8px;
+        }
+        .param, .returns, .exceptions, .remarks {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #cccccc;
+        }
+        .param-name, .exception-name {
+            font-weight: bold;
+            color: #9cdcfe;
+        }
+        .code-example {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #4ec9b0;
+            border: 1px solid #3e3e42;
+        }
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            display: block;
+            color: #d4d4d4;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #3d2d1f;
+            border-left: 4px solid #d7ba7d;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #d7ba7d;
+        }
+        .note {
+            background-color: #1a3a3a;
+            border-left: 4px solid #4ec9b0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #4ec9b0;
+        }
+        .see-also {
+            background-color: #252526;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .see-also ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .see-also li {
+            margin: 5px 0;
+        }
+        .see-also a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .see-also a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-doc">
+        <h2 class="api-title">LlamaChat Class</h2>
+
+        <div class="summary">
+            <p>High-level chat interface for multi-turn conversations with context management, automatic message history trimming, and response formatting.</p>
+        </div>
+
+        <div class="syntax">
+            <pre><code>public class LlamaChat : IDisposable</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>Remarks</h3>
+            <p>
+                The <code>LlamaChat</code> class provides a conversation interface that abstracts away the complexity of managing chat context and formatting. 
+                It automatically maintains conversation history, detects chat formats from loaded models, and enforces context limits to prevent memory overflow.
+            </p>
+            <p>
+                <strong>Key Features:</strong>
+            </p>
+            <ul>
+                <li>Automatic context management with history trimming based on batch size</li>
+                <li>Multi-turn conversation support with role-based messages</li>
+                <li>Automatic chat format detection (ChatML, Alpaca, LLaMA2, etc.)</li>
+                <li>System prompt configuration for persona/behavior tuning</li>
+                <li>Token usage tracking across the conversation</li>
+                <li>Both synchronous and asynchronous API for response generation</li>
+            </ul>
+            <p>
+                <strong>Thread Safety:</strong> Not thread-safe. Serialize access if using across multiple threads.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>Constructor</h3>
+
+            <div class="member">
+                <div class="member-title">LlamaChat</div>
+                <div class="member-signature">
+                    public LlamaChat(string modelPath, LlamaConfig llamaConfig = null, GenerationConfig generation = null, string systemPrompt = null)
+                </div>
+                <p><strong>Summary:</strong> Initializes a new chat instance by loading a model and establishing conversation context.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">modelPath</span> - Path to the GGML model file to load.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">llamaConfig</span> - Optional configuration for model loading (GPU layers, context size, threading). Defaults are used if null.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">generation</span> - Optional default generation configuration. Overridden per-message if specified. Default max tokens is 150.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">systemPrompt</span> - Optional system message to set the assistant's behavior/persona.
+                    </div>
+                </div>
+
+                <div class="exceptions">
+                    <div class="param">
+                        <span class="exception-name">Exception</span> - Thrown if the model cannot be loaded.
+                    </div>
+                    <div class="param">
+                        <span class="exception-name">ArgumentException</span> - Thrown if configuration parameters are invalid.
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Basic Chat Initialization</div>
+                    <code>
+using var chat = new LlamaChat("models/model.gguf", 
+    systemPrompt: "You are a helpful AI assistant.");
+
+Console.WriteLine($"Chat format detected: {chat.Format}");
+Console.WriteLine($"Available context: {chat.Model.ContextSize} tokens");
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Advanced Configuration</div>
+                    <code>
+var llamaConfig = new LlamaConfig
+{
+    GpuLayers = 50,
+    ContextSize = 8192,
+    BatchSize = 512,
+    SilentMode = true
+};
+
+var generationConfig = new GenerationConfig
+{
+    MaxTokens = 256,
+    Temperature = 0.8f,
+    TopP = 0.95f,
+    RepeatPenalty = 1.1f
+};
+
+using var chat = new LlamaChat(
+    "models/model.gguf",
+    llamaConfig,
+    generationConfig,
+    "You are an expert programmer helping with C# questions."
+);
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Properties</h3>
+
+            <div class="member">
+                <div class="member-title">Model</div>
+                <div class="member-signature">public LlamaInference Model { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets the underlying LlamaInference instance handling model operations.</p>
+                <div class="remarks">
+                    Provides low-level access to generation and tokenization if needed.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Config</div>
+                <div class="member-signature">public LlamaConfig Config { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets the model loading configuration used.</p>
+            </div>
+
+            <div class="member">
+                <div class="member-title">GenerationConfig</div>
+                <div class="member-signature">public GenerationConfig GenerationConfig { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the default generation configuration for responses.</p>
+                <div class="remarks">
+                    Can be updated with <code>SendChat(..., temp: false)</code> to change defaults for subsequent messages.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Format</div>
+                <div class="member-signature">public ChatFormat Format { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets the detected chat format of the loaded model.</p>
+                <div class="remarks">
+                    Determines how messages are formatted before generation. Common values: ChatML, Alpaca, LLaMA2.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ChatAlive</div>
+                <div class="member-signature">public bool ChatAlive { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets whether the chat instance is active and ready for messages.</p>
+                <div class="remarks">
+                    Returns false after <code>KillChat()</code> is called.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">TotalTokensUsed</div>
+                <div class="member-signature">public int TotalTokensUsed { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets the cumulative token count across the entire conversation.</p>
+                <div class="remarks">
+                    Useful for monitoring API usage or implementing token budgets.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ChatMessages</div>
+                <div class="member-signature">public List&lt;ChatMessage&gt; ChatMessages { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets the list of messages in the current conversation history.</p>
+                <div class="remarks">
+                    May be automatically trimmed to fit the batch size limit. Includes system, user, and assistant messages.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Methods</h3>
+
+            <div class="member">
+                <div class="member-title">SetSystemPrompt</div>
+                <div class="member-signature">
+                    public void SetSystemPrompt(string prompt)
+                </div>
+                <p><strong>Summary:</strong> Sets or updates the system prompt for the conversation.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">prompt</span> - The system message content. Replaces any existing system message.
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <code>
+chat.SetSystemPrompt("You are a Python expert who explains concepts clearly.");
+var response = await chat.SendChatAsync("How does async/await work in Python?");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">AddStopStrings</div>
+                <div class="member-signature">
+                    public void AddStopStrings(string[] strings)
+                </div>
+                <p><strong>Summary:</strong> Adds stop sequences that will terminate generation when encountered.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">strings</span> - Array of strings to stop generation at.
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <code>
+chat.AddStopStrings(new[] { "\n\n", "User:", "Assistant:" });
+var response = chat.SendChat("Question?");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">SendChat</div>
+                <div class="member-signature">
+                    public string SendChat(string prompt, GenerationConfig generation = null, bool temp = false)
+                </div>
+                <p><strong>Summary:</strong> Sends a user message and receives a synchronous response.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">prompt</span> - The user message text.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">generation</span> - Optional one-time generation config override. If null, uses the default.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">temp</span> - If true, doesn't update the default GenerationConfig. If false, overrides defaults.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> The assistant's response as a string.
+                </div>
+
+                <div class="exceptions">
+                    <div class="param">
+                        <span class="exception-name">InvalidOperationException</span> - Thrown if ChatAlive is false (chat was killed).
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Basic Message</div>
+                    <code>
+using var chat = new LlamaChat("model.gguf", 
+    systemPrompt: "You are a helpful assistant.");
+
+string response = chat.SendChat("What's the weather like?");
+Console.WriteLine($"Assistant: {response}");
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Multi-turn Conversation</div>
+                    <code>
+using var chat = new LlamaChat("model.gguf");
+
+string resp1 = chat.SendChat("What is the capital of France?");
+Console.WriteLine($"1: {resp1}");
+
+string resp2 = chat.SendChat("Tell me more about it.");  // Retains context from first message
+Console.WriteLine($"2: {resp2}");
+
+Console.WriteLine($"Total tokens used: {chat.TotalTokensUsed}");
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Temporary Config Override</div>
+                    <code>
+// Use creative settings for this message only
+var creativeConfig = new GenerationConfig
+{
+    Temperature = 1.5f,  // More random
+    MaxTokens = 300
+};
+
+string response = chat.SendChat("Write a short poem", creativeConfig, temp: true);
+// Subsequent messages use original defaults
+                    </code>
+                </div>
+
+                <div class="warning">
+                    <strong>Warning:</strong> This is a blocking call. Use <code>SendChatAsync</code> for UI responsiveness.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">SendChatAsync</div>
+                <div class="member-signature">
+                    public Task&lt;string&gt; SendChatAsync(string prompt, GenerationConfig generation = null, bool temp = false, CancellationToken cancellationToken = default)
+                </div>
+                <p><strong>Summary:</strong> Asynchronously sends a message and receives a response without blocking.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">prompt</span> - The user message.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">generation</span> - Optional generation config override.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">temp</span> - If true, doesn't persist the config change.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">cancellationToken</span> - Allows cancellation of the request.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A task that completes with the assistant's response.
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Async Chat with Timeout</div>
+                    <code>
+using var chat = new LlamaChat("model.gguf");
+using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+
+try
+{
+    string response = await chat.SendChatAsync(
+        "Explain quantum computing",
+        cancellationToken: cts.Token
+    );
+    Console.WriteLine(response);
+}
+catch (OperationCanceledException)
+{
+    Console.WriteLine("Response generation timed out.");
+}
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">TrimHistoryByTokens</div>
+                <div class="member-signature">
+                    public void TrimHistoryByTokens()
+                </div>
+                <p><strong>Summary:</strong> Manually removes oldest messages to fit within the batch size limit.</p>
+
+                <div class="remarks">
+                    <strong>Automatic Behavior:</strong> This method is called automatically before generating each response. Manual calls are rarely needed.
+                    <br/><br/>
+                    <strong>Algorithm:</strong> Preserves the system message (if present), then keeps as many recent messages as fit within the batch limit.
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Manual trim (useful for debugging)
+chat.TrimHistoryByTokens();
+Console.WriteLine($"Kept {chat.ChatMessages.Count} messages");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">KillChat</div>
+                <div class="member-signature">
+                    public void KillChat()
+                </div>
+                <p><strong>Summary:</strong> Terminates the chat session and releases all resources.</p>
+
+                <div class="remarks">
+                    <strong>Effect:</strong> Sets ChatAlive to false and clears the message history. Further SendChat calls will throw an exception.
+                </div>
+
+                <div class="code-example">
+                    <code>
+var chat = new LlamaChat("model.gguf");
+chat.SendChat("Hello!");
+chat.KillChat();  // Session ended
+
+// This will throw InvalidOperationException
+try
+{
+    chat.SendChat("This won't work");
+}
+catch (InvalidOperationException ex)
+{
+    Console.WriteLine(ex.Message);
+}
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Dispose</div>
+                <div class="member-signature">
+                    public void Dispose()
+                </div>
+                <p><strong>Summary:</strong> Releases all resources and disposes the underlying model.</p>
+
+                <div class="remarks">
+                    <strong>Best Practice:</strong> Always use a <code>using</code> statement to ensure proper cleanup.
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Recommended usage pattern
+using (var chat = new LlamaChat("model.gguf"))
+{
+    string response = chat.SendChat("Hello!");
+    Console.WriteLine(response);
+}  // Automatically disposed here
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>See Also</h3>
+            <ul>
+                <li><a href="LlamaInference.html">LlamaInference</a> - Core inference engine</li>
+                <li><a href="GenerationConfig.html">GenerationConfig</a> - Generation parameters</li>
+                <li><a href="LlamaConfig.html">LlamaConfig</a> - Model loading configuration</li>
+                <li><a href="ChatMessage.html">ChatMessage</a> - Individual chat message representation</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

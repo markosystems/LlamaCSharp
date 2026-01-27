@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LlamaInference Class Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .api-doc {
+            background: #252526;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .api-title {
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+            margin: 0 0 20px 0;
+            color: #007acc;
+        }
+        .summary {
+            background-color: #1e3a3a;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: #b4d7ff;
+        }
+        .syntax {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+
+            .syntax code {
+                font-family: 'Courier New', monospace;
+                color: #ce9178;
+            }
+        .section {
+            margin: 30px 0;
+        }
+        .section h3 {
+            color: #007acc;
+            border-bottom: 2px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .member {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border-left: 3px solid #3e3e42;
+        }
+        .member:hover {
+            border-left-color: #007acc;
+            background-color: #252526;
+        }
+        .member-signature {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+            margin-bottom: 10px;
+            border: 1px solid #3e3e42;
+        }
+        .member-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #b4d7ff;
+            margin-bottom: 8px;
+        }
+        .param, .returns, .exceptions, .remarks {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #cccccc;
+        }
+        .param-name, .exception-name {
+            font-weight: bold;
+            color: #9cdcfe;
+        }
+        .code-example {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #4ec9b0;
+            border: 1px solid #3e3e42;
+        }
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            display: block;
+            color: #d4d4d4;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #3d2d1f;
+            border-left: 4px solid #d7ba7d;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #d7ba7d;
+        }
+        .note {
+            background-color: #1a3a3a;
+            border-left: 4px solid #4ec9b0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #4ec9b0;
+        }
+        .see-also {
+            background-color: #252526;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .see-also ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .see-also li {
+            margin: 5px 0;
+        }
+        .see-also a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .see-also a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #3e3e42;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1e1e1e;
+            color: #b4d7ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-doc">
+        <h2 class="api-title">LlamaInference Class</h2>
+
+        <div class="summary">
+            <p>High-level wrapper for llama.cpp inference engine that provides text generation, tokenization, and chat formatting capabilities.</p>
+        </div>
+
+        <div class="syntax">
+            <pre><code>public class LlamaInference : IDisposable</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>Remarks</h3>
+            <p>
+                The <code>LlamaInference</code> class serves as the primary interface for interacting with language models using the llama.cpp library. 
+                It handles model loading, context management, tokenization, and text generation with configurable sampling parameters.
+            </p>
+            <p>
+                <strong>Key Responsibilities:</strong>
+            </p>
+            <ul>
+                <li>Loading and managing model files and inference contexts</li>
+                <li>Converting text to tokens and tokens back to text</li>
+                <li>Generating text with advanced sampling strategies (top-k, top-p, temperature, etc.)</li>
+                <li>Formatting conversations using the model's built-in chat templates</li>
+                <li>Managing GPU memory allocation and batch processing</li>
+            </ul>
+            <p>
+                <strong>Thread Safety:</strong> This class is not thread-safe. Use synchronization mechanisms if sharing across threads.
+            </p>
+            <p>
+                <strong>Resource Management:</strong> Always dispose of instances properly using <code>using</code> statements or <code>Dispose()</code> 
+                to ensure native resources are released.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>Constructors</h3>
+
+            <div class="member">
+                <div class="member-title">LlamaInference(string, LlamaConfig, int)</div>
+                <div class="member-signature">
+                    public LlamaInference(string modelPath, LlamaConfig config = null, int warninglevel = -1)
+                </div>
+                <p><strong>Summary:</strong> Initializes a new instance of the LlamaInference class by loading a model from a file path.</p>
+                
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">modelPath</span> - Absolute or relative file path to the GGML model file. The file must be in a compatible llama.cpp format.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">config</span> - Optional <code>LlamaConfig</code> object specifying model loading parameters (GPU layers, memory options, threading). If null, default configuration is used.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">warninglevel</span> - Log level filter (-1 = no logs, 0+ = show errors/warnings). Controls llama.cpp backend logging output.
+                    </div>
+                </div>
+
+                <div class="exceptions">
+                    <strong>Exceptions:</strong>
+                    <div class="param">
+                        <span class="exception-name">Exception</span> - Thrown when the model file cannot be found, is corrupted, or is incompatible with the llama.cpp library.
+                    </div>
+                    <div class="param">
+                        <span class="exception-name">Exception</span> - Thrown when context creation fails due to insufficient memory or invalid configuration.
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Basic Usage</div>
+                    <code>
+// Load a model with default configuration
+using var inference = new LlamaInference("models/model.gguf");
+Console.WriteLine($"Context size: {inference.ContextSize}");
+Console.WriteLine($"Vocab size: {inference.VocabSize}");
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Advanced Configuration</div>
+                    <code>
+// Load with GPU acceleration and silent mode
+var config = new LlamaConfig
+{
+    GpuLayers = 40,           // Use 40 layers on GPU
+    ContextSize = 4096,       // Max context length
+    BatchSize = 512,
+    Threads = Environment.ProcessorCount,
+    SilentMode = true        // Suppress llama.cpp logs
+};
+
+using var inference = new LlamaInference("models/model.gguf", config);
+                    </code>
+                </div>
+
+                <div class="remarks">
+                    <strong>Performance Considerations:</strong>
+                    <ul>
+                        <li>GPU acceleration via <code>GpuLayers</code> significantly improves inference speed on CUDA/Metal-capable hardware</li>
+                        <li>Larger context sizes consume more memory; allocate accordingly</li>
+                        <li>The constructor blocks until the model is fully loaded; expect delays for large models (several GB)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">LlamaInference(IntPtr, LlamaConfig)</div>
+                <div class="member-signature">
+                    public LlamaInference(IntPtr _m, LlamaConfig config)
+                </div>
+                <p><strong>Summary:</strong> Initializes a new instance using a pre-loaded model pointer (advanced usage).</p>
+                
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">_m</span> - IntPtr to a pre-loaded llama model. Must be a valid pointer obtained from llama.cpp library.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">config</span> - LlamaConfig specifying context creation parameters.
+                    </div>
+                </div>
+
+                <div class="exceptions">
+                    <strong>Exceptions:</strong>
+                    <div class="param">
+                        <span class="exception-name">Exception</span> - Thrown if the model pointer is null or the context cannot be created.
+                    </div>
+                </div>
+
+                <div class="remarks">
+                    <strong>Advanced Usage:</strong> This constructor is intended for scenarios where a model has already been loaded and you want to create multiple inference contexts from the same model.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Properties</h3>
+
+            <div class="member">
+                <div class="member-title">ContextSize</div>
+                <div class="member-signature">public int ContextSize { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets the maximum context length for the loaded model.</p>
+                <div class="remarks">
+                    <strong>Value:</strong> Number of tokens the model can process in a single context window. This is determined by both the model architecture and the configuration.
+                </div>
+                <div class="code-example">
+                    <code>
+var inference = new LlamaInference("model.gguf");
+Console.WriteLine($"Max context: {inference.ContextSize} tokens");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">VocabSize</div>
+                <div class="member-signature">public int VocabSize { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets the vocabulary size of the model.</p>
+                <div class="remarks">
+                    <strong>Value:</strong> Total number of unique tokens in the model's vocabulary. Used for bounds-checking token IDs.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">ModelPath</div>
+                <div class="member-signature">public string ModelPath { get; private set; }</div>
+                <p><strong>Summary:</strong> Gets the file path of the loaded model.</p>
+                <div class="remarks">
+                    <strong>Value:</strong> The path used during initialization. Useful for logging and debugging.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Methods</h3>
+
+            <div class="member">
+                <div class="member-title">Tokenize</div>
+                <div class="member-signature">
+                    public int[] Tokenize(string text, bool addBos = true, bool parseSpecial = false)
+                </div>
+                <p><strong>Summary:</strong> Converts text into an array of token IDs using the model's tokenizer.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">text</span> - The input text to tokenize. Can be any UTF-8 string.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">addBos</span> - If true, adds the Beginning-of-Sequence token at the start. Default is true.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">parseSpecial</span> - If true, processes special tokens like system markers. Default is false.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> An array of integer token IDs representing the input text.
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Basic Tokenization</div>
+                    <code>
+var inference = new LlamaInference("model.gguf");
+int[] tokens = inference.Tokenize("Hello, world!");
+Console.WriteLine($"Number of tokens: {tokens.Length}");
+foreach (var token in tokens)
+{
+    Console.WriteLine($"Token ID: {token}");
+}
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Controlling BOS Token</div>
+                    <code>
+// Without BOS token (useful for continuing text)
+int[] tokens = inference.Tokenize("continuation", addBos: false);
+
+// With BOS token (standard for new prompts)
+int[] tokens = inference.Tokenize("New prompt", addBos: true);
+                    </code>
+                </div>
+
+                <div class="remarks">
+                    <strong>Important:</strong> The tokenization result depends on the model's built-in tokenizer. Different models may tokenize identical text differently.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Detokenize</div>
+                <div class="member-signature">
+                    public string Detokenize(int[] tokens, bool removeSpecial = false)
+                </div>
+                <p><strong>Summary:</strong> Converts an array of token IDs back into readable text.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">tokens</span> - Array of token IDs to convert.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">removeSpecial</span> - If true, strips special/control tokens. Default is false.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> The reconstructed text as a UTF-8 string.
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Round-Trip Conversion</div>
+                    <code>
+var inference = new LlamaInference("model.gguf");
+string original = "The quick brown fox";
+
+// Tokenize
+int[] tokens = inference.Tokenize(original, addBos: false);
+
+// Detokenize back
+string reconstructed = inference.Detokenize(tokens);
+
+Console.WriteLine($"Original: {original}");
+Console.WriteLine($"Reconstructed: {reconstructed}");
+                    </code>
+                </div>
+
+                <div class="remarks">
+                    <strong>Note:</strong> Due to subword tokenization, reconstructed text may differ slightly from the original (e.g., whitespace differences).
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Generate</div>
+                <div class="member-signature">
+                    public string Generate(string prompt, GenerationConfig config = null)
+                </div>
+                <p><strong>Summary:</strong> Generates text from a given prompt using configured sampling parameters.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">prompt</span> - The input prompt to base generation on.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">config</span> - Optional <code>GenerationConfig</code> controlling temperature, sampling, penalties, etc. If null, defaults are used.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> The generated text as a string.
+                </div>
+
+                <div class="exceptions">
+                    <div class="param">
+                        <span class="exception-name">Exception</span> - Thrown if prompt evaluation fails due to context overflow or other inference errors.
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Basic Generation</div>
+                    <code>
+var inference = new LlamaInference("model.gguf");
+string result = inference.Generate("What is 2+2?");
+Console.WriteLine(result);
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Advanced Generation with Configuration</div>
+                    <code>
+var config = new GenerationConfig
+{
+    MaxTokens = 200,
+    Temperature = 0.7f,           // Lower = more deterministic
+    TopK = 40,                    // Restrict to top-40 tokens
+    TopP = 0.9f,                  // Nucleus sampling
+    RepeatPenalty = 1.1f,         // Penalize repetition
+    StopStrings = new[] { ".", "?" }  // Stop at sentence end
+};
+
+string result = inference.Generate("Once upon a time,", config);
+                    </code>
+                </div>
+
+                <div class="remarks">
+                    <strong>Sampling Strategy:</strong> The method applies samplers in this order:
+                    <ol>
+                        <li>Repeat penalty (reduces token repetition)</li>
+                        <li>Top-K (limits vocabulary to top K candidates)</li>
+                        <li>Top-P / Nucleus (cumulative probability threshold)</li>
+                        <li>Minimum P (removes very low probability tokens)</li>
+                        <li>Temperature (controls randomness)</li>
+                    </ol>
+                </div>
+
+                <div class="warning">
+                    <strong>Warning:</strong> This is a blocking operation. For UI-responsive applications, use <code>GenerateAsync</code> instead.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">GenerateAsync</div>
+                <div class="member-signature">
+                    public Task&lt;string&gt; GenerateAsync(string prompt, GenerationConfig config = null, CancellationToken cancellationToken = default)
+                </div>
+                <p><strong>Summary:</strong> Asynchronously generates text from a prompt without blocking the calling thread.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">prompt</span> - The input prompt.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">config</span> - Optional generation configuration.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">cancellationToken</span> - Allows cancellation of the generation operation.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A task that completes with the generated text.
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Async Generation with Cancellation</div>
+                    <code>
+var inference = new LlamaInference("model.gguf");
+using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+
+try
+{
+    string result = await inference.GenerateAsync("Tell me a story.", cancellationToken: cts.Token);
+    Console.WriteLine(result);
+}
+catch (OperationCanceledException)
+{
+    Console.WriteLine("Generation was cancelled.");
+}
+                    </code>
+                </div>
+
+                <div class="note">
+                    <strong>Note:</strong> The method still performs computation on the same thread but yields control, allowing other async operations to proceed.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">FormatChat</div>
+                <div class="member-signature">
+                    public string FormatChat(List&lt;ChatMessage&gt; messages, bool addAssistant = true)
+                </div>
+                <p><strong>Summary:</strong> Formats a list of chat messages using the model's built-in chat template.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">messages</span> - List of ChatMessage objects with Role and Content properties.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">addAssistant</span> - If true, adds an empty assistant message to prompt the model for a response.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> Formatted chat string ready for generation.
+                </div>
+
+                <div class="exceptions">
+                    <div class="param">
+                        <span class="exception-name">Exception</span> - Thrown if the chat template is invalid or messages cannot be formatted.
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Formatting Chat Messages</div>
+                    <code>
+var messages = new List&lt;ChatMessage&gt;
+{
+    new ChatMessage { Role = "system", Content = "You are a helpful assistant." },
+    new ChatMessage { Role = "user", Content = "What is the capital of France?" }
+};
+
+string formatted = inference.FormatChat(messages, addAssistant: true);
+string response = inference.Generate(formatted);
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">GetChatTemplate</div>
+                <div class="member-signature">
+                    public string GetChatTemplate()
+                </div>
+                <p><strong>Summary:</strong> Retrieves the model's built-in chat template string.</p>
+
+                <div class="returns">
+                    <strong>Returns:</strong> The template string if the model has one; null if not available.
+                </div>
+
+                <div class="code-example">
+                    <code>
+var template = inference.GetChatTemplate();
+if (template != null)
+{
+    Console.WriteLine($"Model uses template: {template}");
+}
+else
+{
+    Console.WriteLine("Model has no built-in chat template.");
+}
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">DetectChatFormat</div>
+                <div class="member-signature">
+                    public ChatFormat DetectChatFormat()
+                </div>
+                <p><strong>Summary:</strong> Detects the chat format (e.g., ChatML, Alpaca, LLaMA2) from the model's template.</p>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A ChatFormat enum value indicating the detected format, or ChatFormat.Unknown if unrecognized.
+                </div>
+
+                <div class="code-example">
+                    <code>
+ChatFormat format = inference.DetectChatFormat();
+Console.WriteLine($"Detected format: {format}");
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Dispose</div>
+                <div class="member-signature">
+                    public void Dispose()
+                </div>
+                <p><strong>Summary:</strong> Releases all managed and unmanaged resources.</p>
+
+                <div class="remarks">
+                    <strong>Important:</strong> Always call this method or use a <code>using</code> statement to ensure proper cleanup of native resources.
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Using statement (preferred)
+using var inference = new LlamaInference("model.gguf")
+{
+    var result = inference.Generate("Hello!");
+}
+
+// Manual disposal
+var inference = new LlamaInference("model.gguf");
+try
+{
+    var result = inference.Generate("Hello!");
+}
+finally
+{
+    inference.Dispose();
+}
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>See Also</h3>
+            <ul>
+                <li><a href="GenerationConfig.html">GenerationConfig</a> - Configuration for text generation parameters</li>
+                <li><a href="LlamaChat.html">LlamaChat</a> - High-level conversation wrapper</li>
+                <li><a href="LlamaConfig.html">LlamaConfig</a> - Configuration for model loading</li>
+                <li><a href="ModelInfo.html">ModelInfo</a> - Model metadata and statistics</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

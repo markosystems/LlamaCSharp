@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenerationConfig Class Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .api-doc {
+            background: #252526;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .api-title {
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+            margin: 0 0 20px 0;
+            color: #007acc;
+        }
+        .summary {
+            background-color: #1e3a3a;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: #b4d7ff;
+        }
+        .syntax {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .syntax code {
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section h3 {
+            color: #007acc;
+            border-bottom: 2px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .member {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border-left: 3px solid #3e3e42;
+        }
+        .member:hover {
+            border-left-color: #007acc;
+            background-color: #252526;
+        }
+        .member-signature {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+            margin-bottom: 10px;
+            border: 1px solid #3e3e42;
+        }
+        .member-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #b4d7ff;
+            margin-bottom: 8px;
+        }
+        .param, .returns, .exceptions, .remarks {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #cccccc;
+        }
+        .param-name, .exception-name {
+            font-weight: bold;
+            color: #9cdcfe;
+        }
+        .code-example {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #4ec9b0;
+            border: 1px solid #3e3e42;
+        }
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            display: block;
+            color: #d4d4d4;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #3d2d1f;
+            border-left: 4px solid #d7ba7d;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #d7ba7d;
+        }
+        .note {
+            background-color: #1a3a3a;
+            border-left: 4px solid #4ec9b0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #4ec9b0;
+        }
+        .see-also {
+            background-color: #252526;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .see-also ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .see-also li {
+            margin: 5px 0;
+        }
+        .see-also a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .see-also a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #3e3e42;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1e1e1e;
+            color: #b4d7ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-doc">
+        <h2 class="api-title">GenerationConfig Class</h2>
+
+        <div class="summary">
+            <p>Configuration class that controls text generation behavior including sampling strategies, output limits, and response termination.</p>
+        </div>
+
+        <div class="syntax">
+            <pre><code>public class GenerationConfig</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>Remarks</h3>
+            <p>
+                The <code>GenerationConfig</code> class encapsulates all parameters that control how the language model generates text. 
+                By adjusting these settings, you can fine-tune the model's output from deterministic (low temperature, limited vocabulary) 
+                to highly creative (high temperature, diverse sampling).
+            </p>
+            <p>
+                <strong>Common Configurations:</strong>
+            </p>
+            <ul>
+                <li><strong>Deterministic:</strong> Temperature 0.3-0.5, TopK 5-20, TopP 0.9 - for factual, consistent outputs</li>
+                <li><strong>Balanced:</strong> Temperature 0.7, TopK 40, TopP 0.95 - recommended for general use</li>
+                <li><strong>Creative:</strong> Temperature 0.9-1.2, TopK 100+, TopP 0.99 - for diverse, creative outputs</li>
+            </ul>
+            <p>
+                <strong>Default Values:</strong> The defaults are tuned for general-purpose text generation. For specialized tasks, 
+                adjust parameters based on your requirements.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>Properties</h3>
+
+            <div class="member">
+                <div class="member-title">MaxTokens</div>
+                <div class="member-signature">public int MaxTokens { get; set; } = 512</div>
+                <p><strong>Summary:</strong> Gets or sets the maximum number of tokens to generate.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 512 tokens
+                    <br/><strong>Valid Range:</strong> 1 to context size
+                    <br/><strong>Impact:</strong> Larger values allow longer outputs but increase computation time and memory usage
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Short vs. Long Generation</div>
+                    <code>
+// Generate a brief summary
+var shortConfig = new GenerationConfig { MaxTokens = 100 };
+var summary = inference.Generate("Summarize: ...", shortConfig);
+
+// Generate a detailed essay
+var longConfig = new GenerationConfig { MaxTokens = 2000 };
+var essay = inference.Generate("Write an essay on: ...", longConfig);
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Temperature</div>
+                <div class="member-signature">public float Temperature { get; set; } = 0.7f</div>
+                <p><strong>Summary:</strong> Controls randomness in token selection (0.0 = deterministic, 1.0+ = creative).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 0.7f
+                    <br/><strong>Valid Range:</strong> 0.0 to 2.0+
+                    <br/><strong>Behavior:</strong>
+                    <ul>
+                        <li>0.0 = Always pick the most likely token (deterministic)</li>
+                        <li>0.5 = Low randomness, mostly predictable</li>
+                        <li>1.0 = Balanced randomness and coherence</li>
+                        <li>1.5+ = High randomness, very creative but potentially incoherent</li>
+                    </ul>
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Factual, deterministic response
+var factualConfig = new GenerationConfig { Temperature = 0.3f };
+
+// Creative, varied response
+var creativeConfig = new GenerationConfig { Temperature = 1.2f };
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">TopK</div>
+                <div class="member-signature">public int TopK { get; set; } = 40</div>
+                <p><strong>Summary:</strong> Limits token selection to the K most likely tokens (0 = disabled).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 40
+                    <br/><strong>Valid Range:</strong> 0 (disabled) to vocabulary size
+                    <br/><strong>Effect:</strong> Eliminates very low-probability tokens that would produce nonsensical text
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Very restrictive - only most likely words
+var strictConfig = new GenerationConfig { TopK = 5 };
+
+// More diverse
+var diverseConfig = new GenerationConfig { TopK = 100 };
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">TopP</div>
+                <div class="member-signature">public float TopP { get; set; } = 0.95f</div>
+                <p><strong>Summary:</strong> Nucleus sampling: includes tokens until cumulative probability reaches P (0.0-1.0).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 0.95f
+                    <br/><strong>Valid Range:</strong> 0.0 to 1.0
+                    <br/><strong>Interaction:</strong> Often used together with TopK for best results
+                    <br/><strong>Behavior:</strong> Lower values = more conservative, higher values = more diverse
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Only consider most likely tokens (conservative)
+var config1 = new GenerationConfig { TopP = 0.9f };
+
+// Include all reasonably likely tokens
+var config2 = new GenerationConfig { TopP = 0.99f };
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">MinP</div>
+                <div class="member-signature">public float MinP { get; set; } = 0.05f</div>
+                <p><strong>Summary:</strong> Minimum probability threshold: excludes tokens below this relative probability.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 0.05f
+                    <br/><strong>Valid Range:</strong> 0.0 to 1.0
+                    <br/><strong>Effect:</strong> Filters out extremely low-probability tokens that add no value
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Seed</div>
+                <div class="member-signature">public uint Seed { get; set; } = 0xFFFFFFFF</div>
+                <p><strong>Summary:</strong> Random seed for reproducible generation (0xFFFFFFFF = random seed).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 0xFFFFFFFF (random)
+                    <br/><strong>Reproducibility:</strong> Set to a fixed value to get identical outputs for the same prompt
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Reproducible generation (same output each time)
+var config = new GenerationConfig { Seed = 42 };
+var result1 = inference.Generate("Hello", config);
+var result2 = inference.Generate("Hello", config);
+// result1 == result2
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">RepeatPenaltyTokens</div>
+                <div class="member-signature">public int RepeatPenaltyTokens { get; set; } = 64</div>
+                <p><strong>Summary:</strong> Number of recent tokens to consider for repeat penalty (0 = disabled).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 64
+                    <br/><strong>Valid Range:</strong> 0 (disabled) to context size
+                    <br/><strong>Purpose:</strong> Looks back this many tokens to penalize tokens that were recently used
+                </div>
+
+                <div class="code-example">
+                    <code>
+var config = new GenerationConfig 
+{ 
+    RepeatPenaltyTokens = 128,
+    RepeatPenalty = 1.1f  // Penalize repeats in the last 128 tokens
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">RepeatPenalty</div>
+                <div class="member-signature">public float RepeatPenalty { get; set; } = 1.0f</div>
+                <p><strong>Summary:</strong> Penalty multiplier for repeated tokens (1.0 = no penalty, >1.0 = penalize).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 1.0f
+                    <br/><strong>Valid Range:</strong> 0.0 to 2.0+
+                    <br/><strong>Behavior:</strong>
+                    <ul>
+                        <li>1.0 = No penalty (token can appear again)</li>
+                        <li>1.1 = 10% penalty for repeated tokens</li>
+                        <li>1.5 = 50% penalty (strong discouragement of repetition)</li>
+                    </ul>
+                </div>
+
+                <div class="code-example">
+                    <code>
+// Strong anti-repetition
+var config = new GenerationConfig 
+{ 
+    RepeatPenaltyTokens = 64,
+    RepeatPenalty = 1.15f 
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">FrequencyPenalty</div>
+                <div class="member-signature">public float FrequencyPenalty { get; set; } = 0.0f</div>
+                <p><strong>Summary:</strong> Penalizes tokens based on how often they appear in the entire generation (0.0 = disabled).</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 0.0f (disabled)
+                    <br/><strong>Use Case:</strong> Encourages diverse vocabulary across the entire output
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">PresencePenalty</div>
+                <div class="member-signature">public float PresencePenalty { get; set; } = 0.0f</div>
+                <p><strong>Summary:</strong> One-time penalty for tokens that have already appeared anywhere in the generation.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> 0.0f (disabled)
+                    <br/><strong>Effect:</strong> Encourages introducing new topics/concepts
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">OnTokenGenerated</div>
+                <div class="member-signature">public Action&lt;int&gt; OnTokenGenerated { get; set; }</div>
+                <p><strong>Summary:</strong> Optional callback fired when each token is generated.</p>
+                
+                <div class="remarks">
+                    <strong>Parameter:</strong> The generated token ID
+                    <br/><strong>Use Case:</strong> Real-time progress updates, streaming output, or early termination
+                </div>
+
+                <div class="code-example">
+                    <code>
+var config = new GenerationConfig
+{
+    MaxTokens = 200,
+    OnTokenGenerated = (tokenId) =>
+    {
+        Console.Write(".");  // Print dot for each token
+    }
+};
+
+var result = inference.Generate("Hello", config);
+Console.WriteLine();  // New line after generation
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">StopStrings</div>
+                <div class="member-signature">public string[] StopStrings { get; set; } = null</div>
+                <p><strong>Summary:</strong> Array of strings that, when generated, stop the generation process.</p>
+                
+                <div class="remarks">
+                    <strong>Default:</strong> null (no stop strings)
+                    <br/><strong>Typical Values:</strong> New lines, role markers (e.g., "User:", "Assistant:")
+                    <br/><strong>Matching:</strong> The generated text is checked for these strings; if found at the end, generation stops
+                </div>
+
+                <div class="code-example">
+                    <code>
+var config = new GenerationConfig
+{
+    MaxTokens = 500,
+    StopStrings = new[] { "\n\n", "User:", "Assistant:" }
+};
+
+var response = inference.Generate("Question?", config);
+// Stops when it generates two newlines or hits "User:"
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Common Presets</h3>
+
+            <div class="member">
+                <div class="member-title">Deterministic</div>
+                <div class="code-example">
+                    <code>
+var deterministicConfig = new GenerationConfig
+{
+    MaxTokens = 512,
+    Temperature = 0.3f,
+    TopK = 20,
+    TopP = 0.9f,
+    RepeatPenaltyTokens = 64,
+    RepeatPenalty = 1.1f
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Balanced (Recommended)</div>
+                <div class="code-example">
+                    <code>
+var balancedConfig = new GenerationConfig
+{
+    MaxTokens = 512,
+    Temperature = 0.7f,
+    TopK = 40,
+    TopP = 0.95f,
+    RepeatPenaltyTokens = 64,
+    RepeatPenalty = 1.1f
+};
+                    </code>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">Creative</div>
+                <div class="code-example">
+                    <code>
+var creativeConfig = new GenerationConfig
+{
+    MaxTokens = 512,
+    Temperature = 1.2f,
+    TopK = 100,
+    TopP = 0.99f,
+    RepeatPenaltyTokens = 64,
+    RepeatPenalty = 1.05f
+};
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>See Also</h3>
+            <ul>
+                <li><a href="LlamaInference.html">LlamaInference</a> - Uses this config for generation</li>
+                <li><a href="LlamaChat.html">LlamaChat</a> - Accepts this config for responses</li>
+                <li><a href="ChunkedGenerator.html">ChunkedGenerator</a> - Supports custom configs</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChunkedGenerator Class Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .api-doc {
+            background: #252526;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .api-title {
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+            margin: 0 0 20px 0;
+            color: #007acc;
+        }
+        .summary {
+            background-color: #1e3a3a;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+            font-size: 1.05em;
+            color: #b4d7ff;
+        }
+        .syntax {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .syntax code {
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section h3 {
+            color: #007acc;
+            border-bottom: 2px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .member {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border-left: 3px solid #3e3e42;
+        }
+        .member:hover {
+            border-left-color: #007acc;
+            background-color: #252526;
+        }
+        .member-signature {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #ce9178;
+            margin-bottom: 10px;
+            border: 1px solid #3e3e42;
+        }
+        .member-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #b4d7ff;
+            margin-bottom: 8px;
+        }
+        .param, .returns, .exceptions, .remarks {
+            margin: 12px 0;
+            padding-left: 20px;
+            color: #cccccc;
+        }
+        .param-name, .exception-name {
+            font-weight: bold;
+            color: #9cdcfe;
+        }
+        .code-example {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #4ec9b0;
+            border: 1px solid #3e3e42;
+        }
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            display: block;
+            color: #d4d4d4;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #3d2d1f;
+            border-left: 4px solid #d7ba7d;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #d7ba7d;
+        }
+        .note {
+            background-color: #1a3a3a;
+            border-left: 4px solid #4ec9b0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            color: #4ec9b0;
+        }
+        .see-also {
+            background-color: #252526;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #3e3e42;
+        }
+        .see-also ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .see-also li {
+            margin: 5px 0;
+        }
+        .see-also a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .see-also a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-doc">
+        <h2 class="api-title">ChunkedGenerator Class</h2>
+
+        <div class="summary">
+            <p>Generates long-form text by breaking generation into multiple chunks with natural transitions, enabling coherent multi-paragraph outputs.</p>
+        </div>
+
+        <div class="syntax">
+            <pre><code>public class ChunkedGenerator</code></pre>
+        </div>
+
+        <div class="section">
+            <h3>Remarks</h3>
+            <p>
+                The <code>ChunkedGenerator</code> class solves the problem of generating long, coherent text by segmenting generation into manageable chunks. 
+                Instead of trying to generate a complete essay in one pass (which often leads to quality degradation or coherence loss), 
+                this class generates text in stages, maintaining context continuity through transition phrases.
+            </p>
+            <p>
+                <strong>How It Works:</strong>
+            </p>
+            <ol>
+                <li>Accepts a prompt and desired number of chunks</li>
+                <li>Generates the first chunk normally</li>
+                <li>Takes the last N words from the generated chunk</li>
+                <li>Adds a random transition phrase (e.g., "Furthermore," "It should be noted that")</li>
+                <li>Repeats steps 2-4 for each remaining chunk</li>
+                <li>Combines all chunks into a coherent final output</li>
+            </ol>
+            <p>
+                <strong>Benefits:</strong>
+            </p>
+            <ul>
+                <li>Generates longer texts without quality degradation</li>
+                <li>More natural transitions than concatenating independent generations</li>
+                <li>Progress reporting for UI integration</li>
+                <li>Both synchronous and asynchronous APIs</li>
+            </ul>
+            <p>
+                <strong>Thread Safety:</strong> Not thread-safe. Use synchronization if sharing across threads.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>Constructor</h3>
+
+            <div class="member">
+                <div class="member-title">ChunkedGenerator</div>
+                <div class="member-signature">
+                    public ChunkedGenerator(LlamaInference llm, string systemPrompt = "")
+                </div>
+                <p><strong>Summary:</strong> Initializes a new chunked text generator with a model instance and optional system prompt.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">llm</span> - The LlamaInference instance to use for text generation. Must not be null.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">systemPrompt</span> - Optional system message to guide generation behavior. Default is empty string.
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Basic Initialization</div>
+                    <code>
+var inference = new LlamaInference("model.gguf");
+var generator = new ChunkedGenerator(inference, 
+    systemPrompt: "Write in an academic tone.");
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Specialized Generator</div>
+                    <code>
+var generator = new ChunkedGenerator(inference,
+    systemPrompt: "You are a creative writing assistant. Write engaging, detailed narratives.");
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Properties</h3>
+
+            <div class="member">
+                <div class="member-title">SystemPrompt</div>
+                <div class="member-signature">public string SystemPrompt { get; set; }</div>
+                <p><strong>Summary:</strong> Gets or sets the system prompt used to guide generation behavior.</p>
+
+                <div class="remarks">
+                    Can be modified at runtime to change the generation style for subsequent calls.
+                </div>
+
+                <div class="code-example">
+                    <code>
+var generator = new ChunkedGenerator(inference);
+generator.SystemPrompt = "Use simple, accessible language.";
+var result = generator.Generate("Explain quantum mechanics", chunks: 5);
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Methods</h3>
+
+            <div class="member">
+                <div class="member-title">Generate</div>
+                <div class="member-signature">
+                    public string Generate(string prompt, int chunks = 10, GenerationConfig config = null, int wordcontext = 20)
+                </div>
+                <p><strong>Summary:</strong> Synchronously generates long-form text across multiple chunks.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">prompt</span> - The initial prompt to start generation from.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">chunks</span> - Number of text chunks to generate. Default is 10.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">config</span> - Optional GenerationConfig. If null, defaults to 200 tokens, 0.7 temperature.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">wordcontext</span> - Number of words from the previous chunk to use for context continuation. Default is 20.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> The complete generated text combining all chunks.
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Generate a Short Essay</div>
+                    <code>
+var inference = new LlamaInference("model.gguf");
+var generator = new ChunkedGenerator(inference);
+
+string essay = generator.Generate(
+    prompt: "The future of artificial intelligence",
+    chunks: 5
+);
+
+Console.WriteLine(essay);
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Generate with Custom Config</div>
+                    <code>
+var config = new GenerationConfig
+{
+    MaxTokens = 300,
+    Temperature = 0.8f,
+    TopP = 0.95f
+};
+
+string story = generator.Generate(
+    prompt: "Once upon a time",
+    chunks: 7,
+    config: config,
+    wordcontext: 30
+);
+                    </code>
+                </div>
+
+                <div class="warning">
+                    <strong>Warning:</strong> This is a blocking call. Total time = (number of chunks � generation time per chunk).
+                </div>
+
+                <div class="remarks">
+                    <strong>Default Generation Config:</strong> If config is null, defaults to:
+                    <ul>
+                        <li>MaxTokens: 200</li>
+                        <li>Temperature: 0.7</li>
+                        <li>RepeatPenaltyTokens: 128</li>
+                        <li>RepeatPenalty: 1.15</li>
+                        <li>FrequencyPenalty: 0.3</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">GenerateAsync</div>
+                <div class="member-signature">
+                    public Task&lt;string&gt; GenerateAsync(string prompt, int chunks = 10, GenerationConfig config = null, IProgress&lt;GenerationProgress&gt; progress = null, CancellationToken cancellationToken = default, int wordcontext = 20)
+                </div>
+                <p><strong>Summary:</strong> Asynchronously generates long-form text with progress reporting and cancellation support.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">prompt</span> - The initial prompt.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">chunks</span> - Number of chunks to generate.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">config</span> - Optional generation configuration.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">progress</span> - Optional IProgress&lt;GenerationProgress&gt; for receiving progress updates.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">cancellationToken</span> - Allows cancellation of the operation.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">wordcontext</span> - Words to retain for context between chunks.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A task that completes with the full generated text.
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Async Generation with Progress</div>
+                    <code>
+var progress = new Progress&lt;GenerationProgress&gt;(p =>
+{
+    Console.WriteLine($"[{p.PercentComplete}%] {p.Status}");
+});
+
+var result = await generator.GenerateAsync(
+    prompt: "The history of computing",
+    chunks: 5,
+    progress: progress
+);
+
+Console.WriteLine(result);
+                    </code>
+                </div>
+
+                <div class="code-example">
+                    <div class="example-title">Async with Timeout and Detailed Progress</div>
+                    <code>
+using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
+
+var progress = new Progress&lt;GenerationProgress&gt;(p =>
+{
+    if (string.IsNullOrEmpty(p.LatestChunk))
+        return;
+        
+    Console.WriteLine($"\n=== Chunk {p.CurrentChunk}/{p.TotalChunks} ===");
+    Console.WriteLine(p.LatestChunk);
+    
+    if (p.IsComplete)
+        Console.WriteLine("\n[Generation Complete]");
+});
+
+try
+{
+    var result = await generator.GenerateAsync(
+        "Write a technical guide on cloud computing",
+        chunks: 8,
+        progress: progress,
+        cancellationToken: cts.Token
+    );
+}
+catch (OperationCanceledException)
+{
+    Console.WriteLine("Generation was cancelled or timed out.");
+}
+                    </code>
+                </div>
+
+                <div class="note">
+                    <strong>Note:</strong> Progress reports include both intermediate updates and chunk completion notifications.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">RemoveIncompleteSentence</div>
+                <div class="member-signature">
+                    public string RemoveIncompleteSentence(string text)
+                </div>
+                <p><strong>Summary:</strong> Trims text to end at the last complete sentence (period, exclamation, or question mark).</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">text</span> - The text to process.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> Text trimmed to the last sentence boundary, or original text if no sentence ender is found.
+                </div>
+
+                <div class="code-example">
+                    <code>
+var generator = new ChunkedGenerator(inference);
+string incomplete = "This is a great idea. But we should also consider that this approach";
+string cleaned = generator.RemoveIncompleteSentence(incomplete);
+// Result: "This is a great idea."
+                    </code>
+                </div>
+
+                <div class="remarks">
+                    <strong>Behavior:</strong>
+                    <ul>
+                        <li>If text already ends with . ! or ?, returns as-is</li>
+                        <li>Otherwise, finds the last sentence terminator and truncates there</li>
+                        <li>If no terminators found, returns original text</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">GetLastWords</div>
+                <div class="member-signature">
+                    public string GetLastWords(string text, int wordCount = 20)
+                </div>
+                <p><strong>Summary:</strong> Extracts the last N words from a text string.</p>
+
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">text</span> - The source text.
+                    </div>
+                    <div class="param">
+                        <span class="param-name">wordCount</span> - Number of words to extract. Default is 20.
+                    </div>
+                </div>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A string containing the last N words, or the entire text if it has fewer words than requested.
+                </div>
+
+                <div class="code-example">
+                    <code>
+var text = "The quick brown fox jumps over the lazy dog and continues running quickly.";
+var lastWords = generator.GetLastWords(text, 5);
+// Result: "continues running quickly." (5 words, with context)
+                    </code>
+                </div>
+
+                <div class="remarks">
+                    <strong>Usage:</strong> Used internally to maintain context between chunks by preserving recent words.
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-title">GetRandomTransition</div>
+                <div class="member-signature">
+                    public string GetRandomTransition()
+                </div>
+                <p><strong>Summary:</strong> Returns a random transition phrase to connect generated chunks naturally.</p>
+
+                <div class="returns">
+                    <strong>Returns:</strong> A randomly selected transition phrase.
+                </div>
+
+                <div class="remarks">
+                    <strong>Available Transitions:</strong>
+                    <ul>
+                        <li>"I would also add,"</li>
+                        <li>"It is worth noting,"</li>
+                        <li>"One must also remember that"</li>
+                        <li>"It bears repeating that"</li>
+                        <li>"Perhaps unnecessarily,"</li>
+                        <li>"At the risk of tedium,"</li>
+                        <li>"Incidentally,"</li>
+                        <li>"More to the point,"</li>
+                        <li>"This is compounded by the fact that"</li>
+                        <li>"Which is to say,"</li>
+                        <li>"And this is before considering how"</li>
+                    </ul>
+                </div>
+
+                <div class="code-example">
+                    <code>
+string transition = generator.GetRandomTransition();
+Console.WriteLine($"Using transition: {transition}");
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>See Also</h3>
+            <ul>
+                <li><a href="LlamaInference.html">LlamaInference</a> - Core text generation engine</li>
+                <li><a href="GenerationProgress.html">GenerationProgress</a> - Progress reporting data class</li>
+                <li><a href="GenerationConfig.html">GenerationConfig</a> - Generation parameters</li>
+            </ul>
+        </div>
+    </div>
+</body>

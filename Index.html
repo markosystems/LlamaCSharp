@@ -1,0 +1,406 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>LlamaCSharp API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e1e;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #1e1e1e 0%, #252526 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+            border-right: 1px solid #3e3e42;
+        }
+        
+        .sidebar h1 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(255,255,255,0.15);
+            padding-bottom: 15px;
+        }
+        
+        .sidebar h2 {
+            font-size: 0.95em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            letter-spacing: 0.5px;
+            color: #007acc;
+        }
+        
+        .doc-list {
+            list-style: none;
+        }
+        
+        .doc-list li {
+            margin-bottom: 8px;
+        }
+        
+        .doc-list a {
+            display: block;
+            padding: 10px 15px;
+            color: #e0e0e0;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .doc-list a:hover {
+            background: rgba(0, 122, 204, 0.2);
+            padding-left: 20px;
+            color: #007acc;
+        }
+        
+        .doc-list a.active {
+            background: rgba(0, 122, 204, 0.3);
+            border-left: 3px solid #007acc;
+            padding-left: 12px;
+            color: #007acc;
+        }
+        
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #252526;
+            padding: 20px;
+            border-bottom: 1px solid #3e3e42;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            color: #007acc;
+            margin: 0;
+            font-size: 1.5em;
+        }
+        
+        .header p {
+            color: #999;
+            margin-top: 5px;
+            font-size: 0.95em;
+        }
+        
+        #Content {
+            flex: 1;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .welcome-panel {
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .welcome-panel h2 {
+            color: #0078d4;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .welcome-panel p {
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+        
+        .class-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .class-card {
+            background: #252526;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #007acc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .class-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transform: translateY(-2px);
+            background: #2d2d30;
+        }
+        
+        .class-card h3 {
+            color: #007acc;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .class-card p {
+            color: #ccc;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 200px;
+                overflow-x: auto;
+            }
+            
+            .sidebar h1 {
+                display: inline-block;
+            }
+            
+            .class-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h1>📚 LlamaCSharp</h1>
+            
+            <h2>Core Classes</h2>
+            <ul class="doc-list">
+                <li><a href="docs/LlamaInference.html" target="Content" onclick="setActive(this)">LlamaInference</a></li>
+                <li><a href="docs/LlamaChat.html" target="Content" onclick="setActive(this)">LlamaChat</a></li>
+                <li><a href="docs/ChunkedGenerator.html" target="Content" onclick="setActive(this)">ChunkedGenerator</a></li>
+            </ul>
+            
+            <h2>Configuration</h2>
+            <ul class="doc-list">
+                <li><a href="docs/GenerationConfig.html" target="Content" onclick="setActive(this)">GenerationConfig</a></li>
+                <li><a href="docs/LlamaConfig.html" target="Content" onclick="setActive(this)">LlamaConfig</a></li>
+                <li><a href="docs/ChatFormation.html" target="Content" onclick="setActive(this)">ChatFormation</a></li>
+            </ul>
+            
+            <h2>Data Classes</h2>
+            <ul class="doc-list">
+                <li><a href="docs/GenerationProgress.html" target="Content" onclick="setActive(this)">GenerationProgress</a></li>
+                <li><a href="docs/ModelInfo.html" target="Content" onclick="setActive(this)">ModelInfo</a></li>
+            </ul>
+            
+            <h2>Quick Links</h2>
+            <ul class="doc-list">
+                <li><a href="#welcome" onclick="showWelcome(); return false;">← Welcome</a></li>
+            </ul>
+        </aside>
+        
+        <div class="content-area">
+            <div class="header">
+                <h1 id="pageTitle">LlamaCSharp API Documentation</h1>
+                <p id="pageSubtitle">Comprehensive API reference for the LlamaCSharp library</p>
+            </div>
+            
+            <iframe id="Content" name="Content"></iframe>
+        </div>
+    </div>
+    
+    <script>
+        function setActive(link) {
+            // Remove active class from all links
+            document.querySelectorAll('.doc-list a').forEach(a => a.classList.remove('active'));
+            // Add active class to clicked link
+            link.classList.add('active');
+            
+            // Update header
+            const title = link.textContent;
+            document.getElementById('pageTitle').textContent = title;
+            document.getElementById('pageSubtitle').textContent = 'API Documentation - LlamaCSharp Library';
+        }
+        
+        function showWelcome() {
+            document.getElementById('pageTitle').textContent = 'LlamaCSharp API Documentation';
+            document.getElementById('pageSubtitle').textContent = 'Comprehensive API reference for the LlamaCSharp library';
+            document.getElementById('Content').srcdoc = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #e0e0e0;
+            max-width: 900px;
+            margin: 0;
+            padding: 40px;
+            background: #1e1e1e;
+        }
+        h2 {
+            color: #007acc;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        p {
+            color: #ccc;
+            font-size: 1.05em;
+        }
+        .class-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .class-card {
+            background: #252526;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #007acc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .class-card h3 {
+            color: #007acc;
+            margin: 0 0 10px 0;
+        }
+        .class-card p {
+            margin: 0;
+            font-size: 0.95em;
+            color: #999;
+        }
+        a {
+            color: #007acc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            color: #ccc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to LlamaCSharp Documentation</h1>
+    
+    <p>
+        LlamaCSharp is a comprehensive C# wrapper for the llama.cpp library, providing high-level APIs 
+        for text generation, conversation management, and model interaction.
+    </p>
+    
+    <h2>Core Features</h2>
+    <ul>
+        <li><strong>Text Generation:</strong> Generate text from prompts with advanced sampling parameters</li>
+        <li><strong>Chat Interface:</strong> Multi-turn conversations with automatic context management</li>
+        <li><strong>Tokenization:</strong> Convert text to tokens and vice versa</li>
+        <li><strong>GPU Acceleration:</strong> Offload computation to CUDA/Metal hardware</li>
+        <li><strong>Long-form Generation:</strong> Generate coherent multi-paragraph text via chunking</li>
+        <li><strong>Async Support:</strong> Non-blocking APIs for responsive applications</li>
+    </ul>
+    
+    <h2>Available Classes</h2>
+    <div class="class-overview">
+        <div class="class-card">
+            <h3>LlamaInference</h3>
+            <p>Core inference engine handling model loading, tokenization, and text generation with configurable sampling.</p>
+        </div>
+        <div class="class-card">
+            <h3>LlamaChat</h3>
+            <p>High-level chat interface with automatic context management, message history, and format detection.</p>
+        </div>
+        <div class="class-card">
+            <h3>ChunkedGenerator</h3>
+            <p>Generates long-form text by breaking generation into chunks with natural transitions.</p>
+        </div>
+        <div class="class-card">
+            <h3>GenerationConfig</h3>
+            <p>Configuration for text generation including sampling, temperature, penalties, and stop strings.</p>
+        </div>
+        <div class="class-card">
+            <h3>LlamaConfig</h3>
+            <p>Configuration for model loading including context size, GPU layers, and memory options.</p>
+        </div>
+        <div class="class-card">
+            <h3>ChatFormation</h3>
+            <p>Formats chat messages according to different model templates (ChatML, Llama2, Mistral, Gemma, Zephyr).</p>
+        </div>
+        <div class="class-card">
+            <h3>GenerationProgress</h3>
+            <p>Data class reporting progress during multi-chunk generation operations.</p>
+        </div>
+        <div class="class-card">
+            <h3>ModelInfo</h3>
+            <p>Contains metadata and architectural information about loaded models.</p>
+        </div>
+    </div>
+    
+    <h2>Getting Started</h2>
+    <p>Select a class from the sidebar to view detailed documentation including:</p>
+    <ul>
+        <li>Complete API signatures and parameter descriptions</li>
+        <li>Detailed remarks explaining behavior and design decisions</li>
+        <li>Practical code examples for common use cases</li>
+        <li>Exception documentation and error handling</li>
+        <li>Performance considerations and best practices</li>
+        <li>Cross-references to related APIs</li>
+    </ul>
+    
+    <h2>Targeting Platforms</h2>
+    <ul>
+        <li>.NET 10</li>
+        <li>.NET Standard 2.1</li>
+    </ul>
+</body>
+</html>
+            `;
+        }
+        
+        // Show welcome panel on page load
+        window.addEventListener('load', showWelcome);
+    </script>
+</body>
+</html>
