@@ -12,7 +12,7 @@ namespace LlamaCSharp.Imp
         private LlamaInference _llm;
         public string SystemPrompt { get; set; }
 
-        private static readonly string[] Transitions = new[]
+        public string[] Transitions = new[]
         {
             "I would also add,",
             "It is worth noting,",
@@ -68,7 +68,7 @@ namespace LlamaCSharp.Imp
                 var lastWords = GetLastWords(chunk, wordCount: wordcontext);
                 var transition = GetRandomTransition();
 
-                context = $"{SystemPrompt}\n{lastWords}\n{transition}";
+                context = $"{SystemPrompt}\n{transition}\n{lastWords}";
             }
 
             return fullResponse.ToString().Trim();
@@ -130,7 +130,7 @@ namespace LlamaCSharp.Imp
 
                 var lastWords = GetLastWords(chunk, wordcontext);
                 var transition = GetRandomTransition();
-                context = $"{SystemPrompt}\n{lastWords}\n{transition}";
+                context = $"{SystemPrompt}\n{transition}\n{lastWords}";
             }
 
             // Final progress
@@ -189,6 +189,8 @@ namespace LlamaCSharp.Imp
             var rng = new Random();
             return Transitions[rng.Next(Transitions.Length)];
         }
+
+        public void SetTransitions(string[] transitions)=>Transitions = transitions;
     }
 
     

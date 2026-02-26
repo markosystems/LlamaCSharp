@@ -15,7 +15,7 @@ namespace LlamaCSharp.Imp
         public GenerationConfig GenerationConfig { get; private set; }
         public ChatFormat Format { get; private set; }
         public bool ChatAlive { get; private set; }
-        public int TotalTokensUsed { get; private set; }
+        public int TotalTokensUsed { get; set; }
         private int _maxHistoryTokens;
 
         public List<ChatMessage> ChatMessages { get; private set; }
@@ -219,7 +219,7 @@ namespace LlamaCSharp.Imp
             ChatMessages.AddRange(keepMessages);
         }
 
-        private int EstimateTokens(string text)
+        public int EstimateTokens(string text)
         {
             return Model.Tokenize(text, addBos: false).Length;
         }
